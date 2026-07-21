@@ -14,8 +14,8 @@ export default function Hero() {
           Actuaire Senior | IFRS 17 · Solvency II · ALM
         </p>
         <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-          Je construis des outils IA pour l'actuariat et la finance quantitative.
-          11 ans d'expérience en assurance vie, enseignant Python à l'ISFA.
+          Je construis des outils IA pour l&apos;actuariat et la finance quantitative.
+          11 ans d&apos;expérience en assurance vie, enseignant Python à l&apos;ISFA.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <a href="#projets" className="bg-[#00ff88] text-black font-bold px-8 py-4 rounded-lg hover:bg-[#00cc66] transition-colors">

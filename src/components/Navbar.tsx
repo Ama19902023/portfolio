@@ -1,36 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const navClass = scrolled
-    ? 'fixed top-0 w-full z-50 bg-black/95 backdrop-blur border-b border-gray-800 transition-all duration-300'
-    : 'fixed top-0 w-full z-50 bg-transparent transition-all duration-300'
-
   return (
-    <nav className={navClass}>
-      <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="/" className="text-green-400 font-bold text-xl">
-          AM<span className="text-white">.</span>
+    <nav style={{position: 'fixed', top: 0, width: '100%', zIndex: 50, backgroundColor: '#0a0a0a', borderBottom: '1px solid #222'}}>
+      <div style={{maxWidth: '1152px', margin: '0 auto', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <a href="/" style={{color: '#00ff88', fontWeight: 'bold', fontSize: '20px', textDecoration: 'none'}}>
+          AM<span style={{color: 'white'}}>.</span>
         </a>
-        <div className="flex gap-8 text-sm">
-          <a href="#projets" className="text-gray-400 hover:text-green-400 transition-colors">Projets</a>
-          <a href="#apropos" className="text-gray-400 hover:text-green-400 transition-colors">A Propos</a>
-          <a href="#blog" className="text-gray-400 hover:text-green-400 transition-colors">Blog</a>
-          <a href="#contact" className="text-gray-400 hover:text-green-400 transition-colors">Contact</a>
+        <div style={{display: 'flex', gap: '32px', fontSize: '14px'}}>
+          <a href="#projets" style={{color: '#9ca3af', textDecoration: 'none'}}>Projets</a>
+          <a href="#apropos" style={{color: '#9ca3af', textDecoration: 'none'}}>A Propos</a>
+          <a href="#blog" style={{color: '#9ca3af', textDecoration: 'none'}}>Blog</a>
+          <a href="#contact" style={{color: '#9ca3af', textDecoration: 'none'}}>Contact</a>
         </div>
-        
-          href="mailto:aminemeddour90@gmail.com"
-          className="bg-green-400 text-black text-sm font-bold px-4 py-2 rounded-lg hover:bg-green-500 transition-colors"
-        >
+        <a href="mailto:aminemeddour90@gmail.com" style={{backgroundColor: '#00ff88', color: 'black', fontSize: '14px', fontWeight: 'bold', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none'}}>
           Me contacter
         </a>
       </div>

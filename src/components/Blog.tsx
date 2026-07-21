@@ -2,23 +2,23 @@
 
 const articles = [
   {
-    titre: 'Fine-tuning Mistral 7B sur des données actuarielles IFRS 17',
+    titre: 'Fine-tuning Mistral 7B sur donnees actuarielles IFRS 17',
     date: 'Juillet 2026',
-    description: 'Comment j\'ai fine-tuné Mistral 7B avec LoRA sur 190 exemples actuariels pour créer le premier LLM spécialisé IFRS 17/SII.',
+    description: 'Comment j ai fine-tune Mistral 7B avec LoRA sur 190 exemples actuariels pour creer le premier LLM specialise IFRS 17/SII.',
     tags: ['LLM', 'LoRA', 'IFRS 17'],
     lien: 'https://github.com/Ama19902023/llm-actuariel',
   },
   {
-    titre: 'Dashboard ALM temps réel avec Solvency II',
+    titre: 'Dashboard ALM temps reel avec Solvency II',
     date: 'Juillet 2026',
-    description: 'Construction d\'un dashboard ALM interactif calculant le SCR Market, la duration gap et les sensibilités aux chocs de taux.',
+    description: 'Construction d un dashboard ALM interactif calculant le SCR Market, la duration gap et les sensibilites aux chocs de taux.',
     tags: ['ALM', 'Solvency II', 'Streamlit'],
     lien: 'https://github.com/Ama19902023/dashboard-alm',
   },
   {
     titre: 'Walk-Forward Backtest sur NQ Futures avec LightGBM',
     date: 'Juillet 2026',
-    description: 'Système de trading algorithmique avec validation walk-forward pour éviter le data leakage. 53.5% winrate sur NQ Futures.',
+    description: 'Systeme de trading algorithmique avec validation walk-forward pour eviter le data leakage. 53.5% winrate sur NQ Futures.',
     tags: ['Trading', 'LightGBM', 'Backtesting'],
     lien: 'https://github.com/Ama19902023/trading-algo',
   },
@@ -26,32 +26,32 @@ const articles = [
 
 export default function Blog() {
   return (
-    <section id="blog" className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            <span className="text-[#00ff88]">Articles</span> & Projets
+    <section id="blog" style={{padding: '96px 16px'}}>
+      <div style={{maxWidth: '1152px', margin: '0 auto'}}>
+        <div style={{textAlign: 'center', marginBottom: '64px'}}>
+          <h2 style={{fontSize: '36px', fontWeight: 'bold', color: 'white', marginBottom: '16px'}}>
+            <span style={{color: '#00ff88'}}>Articles</span> et Projets
           </h2>
-          <p className="text-gray-400 text-lg">Partage de connaissances en actuariat et IA</p>
+          <p style={{color: '#9ca3af', fontSize: '18px'}}>Partage de connaissances en actuariat et IA</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px'}}>
           {articles.map((article) => (
             
               key={article.titre}
               href={article.lien}
               target="_blank"
-              className="bg-[#111] border border-[#222] rounded-xl p-6 hover:border-[#00ff88] transition-colors group"
+              style={{backgroundColor: '#111', border: '1px solid #222', borderRadius: '12px', padding: '24px', textDecoration: 'none', display: 'block'}}
             >
-              <div className="text-gray-500 text-xs mb-3">{article.date}</div>
-              <h3 className="text-white font-bold mb-3 group-hover:text-[#00ff88] transition-colors leading-snug">
+              <div style={{color: '#6b7280', fontSize: '12px', marginBottom: '12px'}}>{article.date}</div>
+              <h3 style={{color: 'white', fontWeight: 'bold', marginBottom: '12px', lineHeight: '1.4'}}>
                 {article.titre}
               </h3>
-              <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+              <p style={{color: '#9ca3af', fontSize: '14px', marginBottom: '16px', lineHeight: '1.6'}}>
                 {article.description}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div style={{display: 'flex', gap: '8px', flexWrap: 'wrap'}}>
                 {article.tags.map((tag) => (
-                  <span key={tag} className="text-xs px-2 py-1 rounded bg-[#1a1a1a] text-gray-400 border border-[#333]">
+                  <span key={tag} style={{fontSize: '12px', padding: '4px 8px', borderRadius: '4px', backgroundColor: '#1a1a1a', color: '#9ca3af', border: '1px solid #333'}}>
                     {tag}
                   </span>
                 ))}

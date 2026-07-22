@@ -2,7 +2,8 @@ import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Expertise from '../components/Expertise'
 import Projets from '../components/Projets'
-import APropos from '../components/APropos'
+import About from '../components/About'
+import Services from '../components/Services'
 import Blog from '../components/Blog'
 import Contact from '../components/Contact'
 
@@ -13,7 +14,8 @@ export default function Home() {
       <Hero />
       <Expertise />
       <Projets />
-      <APropos />
+      <About />
+      <Services />
       <Blog />
       <Contact />
     </main>

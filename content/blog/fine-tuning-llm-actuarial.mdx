@@ -1,0 +1,70 @@
+---
+title: "Fine-tuning Mistral 7B on Actuarial Data — A Practitioner's Guide"
+date: "2026-07-21"
+description: "How I fine-tuned Mistral 7B with LoRA on 190 actuarial examples covering IFRS 17, Solvency II and ALM — and what I learned."
+tags: ["LLM", "IFRS 17", "Fine-tuning", "LoRA", "AI"]
+readTime: "8 min read"
+---
+
+## Why fine-tune a LLM on actuarial data?
+
+General-purpose LLMs like Llama or Mistral know what IFRS 17 is — but they don't really understand it. Ask a base model about the CSM and it will give you a plausible-sounding answer that mixes up concepts, invents acronyms, and misses the operational reality.
+
+After 11 years implementing IFRS 17 and Solvency II at BNP Paribas Cardif, I know what a correct answer looks like. And base models are not there yet.
+
+So I decided to fix that.
+
+## The approach — LoRA fine-tuning
+
+Fine-tuning a 7B parameter model from scratch requires enormous compute. LoRA (Low-Rank Adaptation) solves this by only modifying a small subset of parameters — roughly 1% of the model.
+
+This means:
+- Training fits in 8GB VRAM (RTX 5060 in my case)
+- Training time: 2-3 hours instead of days
+- The base model knowledge is preserved
+- Only the actuarial domain is added on top
+
+## The dataset
+
+I built a custom dataset of 190 question-answer pairs covering:
+
+- **IFRS 17**: CSM, BEL, RA, BBA, PAA, VFA, transition approaches
+- **Solvency II**: SCR, MCR, ORSA, Pillar 1/2/3, VA, MA
+- **ALM**: Duration, gap, immunisation, convexity
+- **Reserving**: IBNR, Chain-Ladder, Bornhuetter-Ferguson
+- **Python code**: BEL calculation, SCR computation, duration
+
+Each example follows the Alpaca format:
+
+```json
+{
+  "instruction": "What is the CSM under IFRS 17?",
+  "input": "",
+  "output": "The CSM (Contractual Service Margin) is..."
+}
+```
+
+## Results
+
+The fine-tuned model shows clear improvement on actuarial terminology and definitions. It correctly identifies the three building blocks of IFRS 17 (BEL, RA, CSM), explains the difference between BBA and PAA, and produces syntactically correct Python code for actuarial calculations.
+
+It is not perfect — 190 examples is a starting point, not an endpoint. The next version will use 500+ examples and include more calculation-heavy examples.
+
+## What I learned
+
+**Domain-specific fine-tuning works** — even with a small dataset, the model learns to use actuarial vocabulary correctly.
+
+**Data quality beats data quantity** — 190 high-quality examples written by a practitioner outperform thousands of scraped Wikipedia paragraphs.
+
+**The gap between theory and practice is real** — base models know IFRS 17 from public documents. Fine-tuned models start to understand how it actually works in production.
+
+## What's next
+
+- Expand dataset to 500+ examples
+- Add more calculation examples with Python code
+- Test on real actuarial benchmarks
+- Publish evaluation methodology
+
+The model is open source on HuggingFace: [aminemed90/mistral-actuariel-v0.1](https://huggingface.co/aminemed90/mistral-actuariel-v0.1)
+
+The code is on GitHub: [Ama19902023/llm-actuariel](https://github.com/Ama19902023/llm-actuariel)

@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "projects": "Projets",
+    "about": "A Propos",
+    "blog": "Blog",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Actuaire Senior x IA x Finance Quantitative",
+    "title": "Amine Meddour",
+    "subtitle": "Je transforme les problemes actuariels complexes en solutions IA — de IFRS 17 au fine-tuning LLM.",
+    "cta_projects": "Voir mes projets",
+    "cta_cv": "Telecharger CV"
+  }
+}

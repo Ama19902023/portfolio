@@ -1,0 +1,123 @@
+---
+
+title: "Construction d'un tableau de bord ALM avec des données réelles EIOPA"
+date: "2026-07-23"
+description: "Comment j'ai construit un tableau de bord en temps réel ALM à l'aide des courbes de taux sans risque officielles de la EIOPA — calcul du décalage de durée, de la sensibilité SCR Marché et aux variations de taux d'intérêt."
+tags: ["ALM", "Solvabilité II", "EIOPA", "Python", "Streamlit"]
+readTime: "10 min"
+
+---
+
+## Pourquoi les données EIOPA sont importantes pour l'ALM
+
+La plupart des tutoriels ALM utilisent les données de Yahoo Finance ou des données synthétiques. En pratique, la Solvabilité II oblige à utiliser la courbe de taux sans risque officiel de la EIOPA — publiée mensuellement — pour dévaluer vos passifs estimatifs.
+
+Utiliser une courbe de dévaluation incorrecte signifie que les BEEL, les SCR et le ratio sont également erronés. Les régulateurs s'en aperçoivent.
+
+Dans cet article, je vais vous guider sur la façon dont j'ai construit un tableau de bord ALM à l'aide des courbes réelles EIOPA, calculant le décalage de durée et les sensibilités SCR Marché en temps réel.
+
+## Qu'est-ce que la courbe de taux sans risque de la EIOPA ?
+
+La courbe de taux sans risque (RFR) de la EIOPA est la courbe de dévaluation officielle utilisée par tous les assureurs européens sous Solvabilité II pour calculer le Bon Estime des Passifs (BEEL).
+
+Elle repose sur les taux swap (jusqu'à la dernière pointe liquide — LLP à 20 ans pour l'euro) et est extrapolée vers le Taux d'Avance ultime (UFR, actuellement de 3,45 % pour l'euro) en utilisant la méthode Smith-Wilson.
+
+Paramètres clés pour la courbe EUR :
+- **LLP** : 20 ans
+- **UFR** : 3,45 %
+- **Alpha** (vitesse de convergence) : 0,128562
+- **Adjustement du risque créditeur** : -10 bp
+
+La EIOPA publie la courbe mensuellement sur son site web. Pour ce tableau de bord, j'ai utilisé Yahoo Finance comme proxy pour les taux en temps réel, avec la même structure de maturité.
+
+## Le modèle ALM
+
+### Structure du bilan
+
+J'ai modélisé un bilan simplifié d'un assureur vie :
+
+**Actifs :**
+- Obligations d'Etat (OAT) : 2 ans, 5 ans, 10 ans, 30 ans
+- Actions : 10 % d'allocation
+- Total : ~475 millions d'euros
+
+**Passifs :**
+- PM Epargne (8 ans de durée)
+- PM Pension (15 ans de durée)
+- PM Protection (3 ans de durée)
+- Total : ~430 millions d'euros
+
+### Calcul de la durée
+
+Pour chaque actif et passif, j'ai calculé la durée de Macaulay :
+
+```python
+def duration_macaulay(cash_flows, maturities, rate):
+    pv_flows = [cf / (1 + rate) ** t 
+                for cf, t in zip(cash_flows, maturities)]
+    total_pv = sum(pv_flows)
+    duration = sum(t * pv / total_pv 
+                   for t, pv in zip(maturities, pv_flows))
+    return duration
+```
+
+Le **décalage de durée** est alors :
+Un décalage positif signifie que les actifs sont plus sensibles aux variations de taux que les passifs. Une variation de +100 bp réduit la valeur des actions.
+
+## Calcul de la SCR Marché
+
+La Solvabilité II Formule Standard rassemble six sous-modules à l'aide d'une matrice de corrélation :
+
+```python
+import numpy as np
+
+scr_vector = np.array([scr_rates, scr_equity, scr_spread])
+
+correlation = np.array([
+    [1.00, 0.00, 0.00],
+    [0.00, 1.00, 0.75],
+    [0.00, 0.75, 1.00]
+])
+
+scr_market = np.sqrt(scr_vector @ correlation @ scr_vector)
+```
+
+Le **ratio SCR** vous indique combien de fois vos fonds propres couvrent votre exigence capitale :
+Un ratio supérieur à 100 % signifie que l'assureur est solvable. Un ratio inférieur à 100 % déclenche une intervention réglementaire.
+
+## Le tableau de bord
+
+J'ai construit le tableau de bord avec Streamlit et Plotly. Les fonctionnalités clés sont :
+
+- **Courbe de taux en temps réel** depuis Yahoo Finance (proxy pour la EIOPA)
+- **Diapositive interactive de l'écart de spread** — ajustez la dévaluation des passifs
+- **Visualisation du décalage de durée** — barre comparant les actifs aux passifs selon leur durée
+- **Pain chartériel SCR Marché** — décomposition par type de risque
+- **Tableau de sensibilités** — impact sur les fonds propres pour des chocs de +100 bp, +200 bp, -100 bp
+
+## Ce que j'ai appris
+
+**La pipeline de données est le point difficile.** Obtenez des données de courbe de taux sans risque claires et cohérentes à la bonne maturité, c'est plus de travail que les calculs ALM.
+
+**Le décalage de durée seul ne suffit pas.** Un décalage de durée nul est l'objectif pour des variations de taux parallèles, mais les non-variation parallèles (twist, butterfly) nécessitent les durées clés — un sujet avancé.
+
+**La SST diffère de la SII.** Le test de solvabilité suisse utilise une TVaR 99 % au lieu d'une VaR 99,5 %, avec une fenêtre horaire de un an et un scénario de stress différent. La logique ALM est similaire mais la calibration diffère.
+
+## Code et démo
+
+Le tableau de bord complet est disponible sur GitHub : [Ama19902023/dashboard-alm](https://github.com/Ama19902023/dashboard-alm)
+
+Il fonctionne localement avec :
+
+```bash
+git clone https://github.com/Ama19902023/dashboard-alm
+pip install -r requirements.txt
+streamlit run src/app.py
+```
+
+## Prochaines étapes
+
+- Intégrer la courbe de taux sans risque réelle via l'API officielle
+- Ajouter les ajustements du volatilité et du matchage
+- Implémenter l'analyse des durées clés
+- Ajouter les scénarios de stress SII pour le marché suisse

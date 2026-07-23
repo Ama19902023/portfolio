@@ -57,7 +57,7 @@ export default function Hero() {
           <div style={{backgroundColor: '#111', border: '1px solid #1a1a1a', borderRadius: '12px', padding: '28px', textAlign: 'left'}}>
             <div style={{color: '#00ff88', fontSize: '13px', fontWeight: '600', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Knowledge transfer</div>
             <p style={{color: '#9ca3af', fontSize: '14px', lineHeight: '1.6'}}>
-              Training the next generation of actuaries at ISFA Lyon — bridging mathematical rigor and modern data science.
+              Training the next generation of actuaries at Sorbonne Paris 1, ESILV, IUT de Paris — bridging mathematical rigor and modern data science.
             </p>
           </div>
 

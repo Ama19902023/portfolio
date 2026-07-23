@@ -46,7 +46,7 @@ export default function About() {
               <div>
                 <div style={{color: '#00ff88', fontSize: '13px', fontWeight: '600', marginBottom: '4px'}}>2020 - Present</div>
                 <div style={{color: 'white', fontWeight: '700', fontSize: '18px', marginBottom: '4px'}}>Lecturer in Python, Statistics and Probability</div>
-                <div style={{color: '#6b7280', fontSize: '14px', marginBottom: '8px'}}>ISFA Lyon - Institut de Science Financiere et d Assurances</div>
+                <div style={{color: '#6b7280', fontSize: '14px', marginBottom: '8px'}}>Sorbonne Paris 1, ESILV, IUT de Paris - Institut de Science Financiere et d Assurances</div>
                 <div style={{color: '#9ca3af', fontSize: '14px', lineHeight: '1.6'}}>
                   Teaching Python, statistics and probability to actuarial students at one of France top actuarial schools.
                 </div>
@@ -75,10 +75,17 @@ export default function About() {
           <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
 
             <div style={{backgroundColor: '#111', border: '1px solid #1a1a1a', borderRadius: '12px', padding: '24px'}}>
-              <div style={{color: '#00ff88', fontSize: '13px', fontWeight: '600', marginBottom: '4px'}}>2026</div>
+              
               <div style={{color: 'white', fontWeight: '700', marginBottom: '4px'}}>M2 Actuarial Science - ISFA Lyon</div>
               <div style={{color: '#6b7280', fontSize: '14px'}}>
                 Thesis: Discriminant variable selection for passive model point aggregation under IFRS 17
+              </div>
+            </div>
+            <div style={{backgroundColor: '#111', border: '1px solid #1a1a1a', borderRadius: '12px', padding: '24px'}}>
+              
+              <div style={{color: 'white', fontWeight: '700', marginBottom: '4px'}}>Machine Learning Certification - OpenClassrooms</div>
+              <div style={{color: '#6b7280', fontSize: '14px'}}>
+                Applied machine learning for data science and AI
               </div>
             </div>
 

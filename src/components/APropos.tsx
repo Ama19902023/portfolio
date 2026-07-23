@@ -9,7 +9,7 @@ const competences = [
 
 const experiences = [
   { poste: 'Actuaire Senior - Coordination Transversale', entreprise: 'BNP Paribas Cardif', periode: '2013 - Present', description: 'IFRS 17, Solvency II, outil de gouvernance Condor (30+ pays)' },
-  { poste: 'Enseignant', entreprise: 'ISFA Lyon', periode: '2020 - Present', description: 'Python, Statistiques, Probabilites - 150 etudiants/an' },
+  { poste: 'Enseignant', entreprise: 'Sorbonne Paris 1, ESILV, IUT de Paris', periode: '2020 - Present', description: 'Python, Statistiques, Probabilites - 150 etudiants/an' },
   { poste: 'Actuaire Consultant', entreprise: 'Optimind Winter', periode: '2012 - 2013', description: 'Sante, Prevoyance - grands comptes assurance' },
 ]
 

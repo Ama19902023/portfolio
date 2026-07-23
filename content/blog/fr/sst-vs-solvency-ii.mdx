@@ -1,0 +1,109 @@
+---
+title: "Test de solvabilité suisse vs Solvabilité II — Principales différences pour les praticiens"
+date: "2026-07-23"
+description: "Une comparaison pratique du SST et du SII à partir d'une perspective de praticien qui a travaillé avec ces deux cadres — couvrant méthodologie, calibration et différences opérationnelles."
+tags: ["SST", "Solvabilité II", "Suisse", "Modélisation du capital", "Risque"]
+readTime: "12 min de lecture"
+
+## Pourquoi cela importe si vous souhaitez travailler en Suisse
+
+Si vous êtes un actuaire européen envisageant de déménager en Suisse — Swiss Re, Zurich Assurance, Helvetia, Baloise — il est indispensable d'appréhender le Test de solvabilité suisse (SST).
+
+Le SST est le cadre réglementaire suisse du capital des assureurs, équivalent à la Solvabilité II en Europe mais avec des différences méthodologiques significatives. Les recruteurs dans les sociétés d'assurance suisses supposent que vous connaissez ces différences. La plupart des actuaires français n'en ont pas connaissance.
+
+Cet article est une comparaison pratique basée sur la documentation publique et sur mon expérience de mise en œuvre de la Solvabilité II au BNP Paribas Cardif dans plus de 30 pays.
+
+## Aperçu du cadre
+
+SST et Solvabilité II partagent l'objectif commun d'assurer que les assureurs puissent répondre à leurs obligations avec une probabilité élevée sur un horizon d'une année.
+
+| | Solvabilité II | Test de solvabilité suisse |
+|---|---|---|
+| Régulateur | EIOPA (UE) | FINMA (Suisse) |
+| Mesure de risque | VaR 99,5% | Expected Shortfall (TVaR) 99% |
+| Horizon | 1 an | 1 an |
+| État de solde | Considération du marché | Considération du marché |
+| Formule standard | Oui | Oui (mais moins utilisée) |
+| Modèles internes | Autorisés | Utilisés largement |
+| Rapport | Annuel (SFCR, RSR) | Annuel (rapport de SST à FINMA) |
+
+## La principale différence méthodologique — TVaR vs VaR
+
+C'est la différence la plus importante et celle que les actuaires manquent le plus.
+
+**La Solvabilité II** utilise **VaR 99,5%** — perte qui n'est pas dépassée avec une probabilité de 99,5 % sur un an. Elle indique le seuil de perte à un quantile spécifique.
+
+**Le SST** utilise **TVaR 99%** (appelé également Expected Shortfall ou CVaR) — la perte attendue étant donné que vous êtes déjà dans les 1 % des scénarios les plus défavorables. C'est l'ensemble de toutes les pertes au-delà du 99ème percentile.
+
+Pourquoi cela compte en pratique ?
+
+TVaR est plus sensible aux risques de queue. Une distribution avec des queues épaisses (catastrophes naturelles, pandémies, crises financières) produira un TVaR supérieur à VaR. Cela signifie que le SST tend à être plus prudent pour les assureurs ayant des exposures significatives dans la queue de la loi.
+
+Pour une assurance vie avec une expérience de mortalité stable, la différence peut être mineure. Pour un réassureur avec exposition aux catastrophes naturelles, cela peut être considérable.
+
+## Risque de marché — structure similaire, calibration différente
+
+Les deux cadres décomposent le risque de marché en sous-modules :
+
+- Risque d'intérêt
+- Risque d'actions
+- Différal de crédit
+- Risque immobilier
+- Risque de change
+- Concentration
+
+La structure est similaire, mais les calibrations diffèrent :
+
+**Choc d'action :**
+- SII : -39% (Type 1), -49% (Type 2)
+- SST : Basé sur des scénarios — plus sévères pour les actions suisses en général
+
+**Choc d'intérêt :**
+- SII : Chocs relatif montée/tombée (préscription EIOPA)
+- SST : Scénarios absolus et relatifs définis par FINMA
+
+**Durée clé de taux :**
+Le SST donne plus d'importance à l'analyse de la durée clé des taux — sensibilité du bilan au mouvements non parallèles de la courbe des rendements. Cela est plus sophistiqué que l'approche choc parallèle dans la formule standard SII.
+
+## Risque d'assurance vie
+
+Les deux cadres couvrent le risque de mortalité, de longévité, de déficience et de décès ainsi que les pertes en raison des démissions et des coûts.
+
+Une spécificité du SST est la **scénario biométrique** : FINMA prescrit des scénarios d'effort pour la mortalité et la morbidité de la population suisse, calibrés sur les données suisses (et non les moyennes européennes comme dans la formule standard SII).
+
+Cela compte pour les assureurs vie en Suisse dont les portefeuilles sont composés à 100 % de clients suisses — la calibration standard SII serait soit sous-estimée, soit sur-estimée.
+
+## Modèles internes — beaucoup plus courants en Suisse
+
+Dans la Solvabilité II, les modèles internes nécessitent l'approbation d'EIOPA et sont utilisés par une minorité de grandes assureurs.
+
+En Suisse, **la plupart des grandes assureurs et tous les réassureurs importants utilisent des modèles internes**. Swiss Re, Zurich Assurance et autres disposent de modèles stochastiques sophistiqués qui dépassent largement la formule standard.
+
+Cela crée un plus grand défi pour les actuaires travaillant dans les sociétés suisses — il faut comprendre la modélisation du capital stochastique, les générateurs de scénarios économiques (ESG) et les simulations de Monte Carlo.
+
+## Implications pratiques pour les actuaires
+
+**Si vous venez d'un background SII :**
+
+1. Vous comprenez l'évaluation consistante du marché — cela se transfère directement
+2. Vous devez apprendre la calcul TVaR — c'est une mathématique simple
+3. Vous devez comprendre les calibrations suisses spécifiques
+4. L'expérience de modèles internes est précieuse — essayez d'en développer une si possible
+
+**Le rapport SST à FINMA** est l'équivalent suisse du RSR. Il contient :
+
+- Calcul du capital cible
+- Capital supportable par le risque (RBC)
+- Ratio SST (RBC / Capital cible)
+- Analyse de sensibilité
+- Évaluation des risques
+
+## Ce que je suis en train de faire
+
+En tant que partie intégrante de mon transition vers les opportunités suisses, j'ai :
+
+- Etudier la documentation technique du SST par FINMA
+- Ajouter les scénarios d'effort du SST à ma table de bord ALM
+- Créer un outil de comparaison : Formule Standard SII vs Modèle Standard SST
+
+Le code sera disponible sur GitHub une fois prêt.

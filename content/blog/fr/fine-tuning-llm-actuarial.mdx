@@ -1,0 +1,71 @@
+--- 
+title: "Affinement de Mistral 7B sur les données actuarielles — Guide d'un praticien"
+date: "2026-07-21"
+description: "Comment j'ai affiné Mistral 7B avec LoRA sur 190 exemples actuariels couvrant IFRS 17, Solvabilité II et ALM — et ce que j'ai appris."
+tags: ["LLM", "IFRS 17", "Affinement", "LoRA", "AI"]
+readTime: "8 min de lecture"
+---
+
+## Pourquoi affiner un LLM sur les données actuarielles ?
+
+Les LLM généralistes comme Llama ou Mistral connaissent la définition d'IFRS 17 — mais ils ne l'ont pas vraiment comprise. Demandez à un modèle de base ce qu'est le CSM, il vous donnera une réponse qui sonne plausible mais mélange les concepts, invente des acronymes et manque de réalité opérationnelle.
+
+Après 11 ans d'implémentation d'IFRS 17 et Solvabilité II chez BNP Paribas Cardif, j'ai compris ce qu'est une réponse correcte. Et les modèles de base ne sont pas là encore.
+
+Je me suis donc décidé à y remédier.
+
+## L'approche — Affinement avec LoRA
+
+Affiner un modèle 7B de zéro nécessite des calculs astronomiques. LoRA (Adaptation de rang faible) résout ce problème en ne modifiant que une petite partie des paramètres — environ 1% du modèle.
+
+Cela signifie :
+
+- L'entraînement s'adapte à 8Go VRAM (RTX 5060 dans mon cas)
+- Le temps d'entraînement : 2-3 heures au lieu de jours
+- La connaissance du modèle de base est préservée
+- Seule la domaine actuarielle est ajoutée en surcouche
+
+## Le jeu de données
+
+J'ai créé un jeu de données personnalisé de 190 paires question-réponse couvrant :
+
+- **IFRS 17** : CSM, BEL, RA, BBA, PAA, VFA, approches de transition
+- **Solvabilité II** : SCR, MCR, ORSA, Pilier 1/2/3, VA, MA
+- **ALM** : Durée, écart, immunisation, convexité
+- **Réserve** : IBNR, Chain-Ladder, Bornhuetter-Ferguson
+- **Code Python** : calcul du BEL, computation de SCR, durée
+
+Chaque exemple suit la format Alpaca :
+
+```json
+{
+  "instruction": "Qu'est-ce que le CSM sous IFRS 17 ?",
+  "input": "",
+  "output": "Le CSM (Contractual Service Margin) est..."
+}
+```
+
+## Résultats
+
+Le modèle affiné montre une amélioration claire en matière de terminologie et de définitions actuarielles. Il identifie correctement les trois blocs de construction d'IFRS 17 (BEL, RA, CSM), explique la différence entre BBA et PAA et produit du code Python syntactiquement correct pour des calculs actuariels.
+
+Ce n'est pas parfait — 190 exemples est un point de départ, pas une fin. La prochaine version utilisera 500+ exemples et inclura plus d'exemples de calcul.
+
+## Ce que j'ai appris
+
+**L'affinement domain-specific fonctionne** — même avec un petit jeu de données, le modèle apprend à utiliser la vocabulaire actuarielle correctement.
+
+**La qualité des données bat la quantité de données** — 190 exemples de haute qualité rédigés par un praticien dépassent les milliers de paragraphes Wikipedia scrapés.
+
+**L'écart entre théorie et pratique est réaliste** — les modèles de base connaissent IFRS 17 à partir de documents publics. Les modèles affinés commencent à comprendre comment il fonctionne en production réelle.
+
+## Ce qui vient ensuite
+
+- Étendre le jeu de données à 500+ exemples
+- Ajouter plus d'exemples de calcul avec du code Python
+- Tester sur des benchmarks actuariels réels
+- Publier la méthode d'évaluation
+
+Le modèle est open source sur HuggingFace : [aminemed90/mistral-actuariel-v0.1](https://huggingface.co/aminemed90/mistral-actuariel-v0.1)
+
+Le code est sur GitHub : [Ama19902023/llm-actuariel](https://github.com/Ama19902023/llm-actuariel)

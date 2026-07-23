@@ -1,0 +1,165 @@
+---
+title: "Intelligence Artificielle Multi-Agente pour le Fermeture Actuariel — De la Théorie à la Production"
+date: "2026-07-23"
+description: "Selon Gartner, les IA multi-agente géreront 40%+ des processus critiques des entreprises d'ici 2028. C'est ce que cela signifie pour les processus de fermeture actuariel — et comment y parvenir."
+tags: ["Intelligence Artificielle Multi-Agente", "LangChain", "IFRS 17", "Automatisation", "IA Agentic"]
+readTime: "13 min lecture"
+---
+
+## Le problème du processus de fermeture
+
+Tout actuaire ayant travaillé dans une grande société d'assurance connaît la douleur du processus de fermeture mensuel.
+
+Dizaines de tâches interdépendantes. Scripts SAS exécutés en séquence. Fichiers Excel passés entre équipes. Contrôles manuels prenant des heures. Délais décalés. Erreurs découvertes à 23h le soir avant la présentation devant le conseil.
+
+J'ai vécu cela pendant 11 ans chez BNP Paribas Cardif — pour les processus de fermeture IFRS 17, Solvabilité II et locales GAAP couvrant plus de 30 pays.
+
+La question que je me pose est : combien de cela pourrait être automatisé avec des IA modernes ?
+
+La réponse en 2026 est : la plupart.
+
+## Qu'est-ce qu'une Intelligence Artificielle Multi-Agente ?
+
+Un agent AI unique est un LLM qui peut utiliser des outils — recherche, exécution de code, lecture de fichiers, appels API. Il raisonne étape par étape et prend des actions pour terminer une tâche.
+
+Un **système multi-agents** est un réseau d'agents spécialisés qui collaborent, chacun gérant une sous-tâche spécifique, coordonné à travers une mémoire partagée ou un protocole de communication.
+
+Selon Gartner, les IA multi-agente géreront plus de 40% des processus critiques des grandes entreprises d'ici 2028, contre 8% en 2026. Le fermeture actuariel est un candidat privilégié.
+
+## La fermeture actuarielle comme problème multi-agents
+
+Décomposons un exemple classique de fermeture mensuelle IFRS 17 en ses composants :
+
+**Ingestion de données**
+- Extraire les données des systèmes d'administration des polices
+- Extraire les données financières du livre générale
+- Valider la complétude et la qualité des données
+- Signaler les anomalies
+
+**Exécution de modèle**
+- Exécuter les projections de modèles BEL (SAS, Python, Prophet)
+- Exécuter les modèles de décès et de défaillance
+- Calculer le RA en utilisant la méthodologie VaR ou TVaR
+- Exécuter le roulage vers l'avant CSM
+
+**Contrôles qualité**
+- Vérifier BEL vs mois précédent — signaler les mouvements supérieurs à un seuil
+- Vérifier la cohérence du roulage vers l'avant CSM
+- Valider par rapport aux plafonds et planchers réglementaires
+- Cross-check avec SII BEL pour la cohérence
+
+**Consolidation**
+- Résumer les résultats sur les lignes de produit
+- Appliquer la conversion de devise pour les entités étrangères
+- Produire l'attribution du résultat net en fonction de la source des revenus
+- Générer la gestion du rapport
+
+**Documentation**
+- Documenter les changements d'hypothèses
+- Signaler les modifications de modèle par rapport au mois précédent
+- Préparer le commentaire pour le signalement actuariel
+- Archiver les résultats avec un journal d'audit
+
+Chaque étape est candidate à être traitée par un agent AI.
+
+## Architecture d'un système multi-agents actuariel
+
+Voici l'architecture que j'ai conçue :
+Agent Coordinateur
+├── Agent Données
+│ ├── Outil de chargement (SQL, API)
+│ ├── Outil de validation (Great Expectations)
+│ └── Outil de détection d'anomalies (tests statistiques)
+├── Agent Modèle
+│ ├── Outil d'exécution SAS
+│ ├── Outil d'exécution Python
+│ └── Outil d'analyse des résultats
+├── Agent QC
+│ ├── Outil de vérification du seuil
+│ ├── Outil de cohérence
+│ └── Outil de signalement exceptionnel
+├── Agent Consolidation
+│ ├── Outil de conversion devise
+│ ├── Outil d'agrégat
+│ └── Outil de calcul d'attribution
+└── Agent Documentation
+├── Générateur de commentaire (LLM)
+├── Mettre à jour le carnet de modèle
+└── Écrire le journal d'audit
+
+**L'Agent Coordinateur** coordonne le flux de travail, décide quel agent appeler ensuite en fonction de l'état actuel, gère les exceptions et escalade vers des humains quand nécessaire.
+
+## Implementation avec LangChain
+
+Voici un exemple simplifié de comment l'agent QC fonctionne :
+
+```python
+from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain_ollama import OllamaLLM
+from langchain.tools import tool
+import pandas as pd
+
+@tool
+def vérifier_mouvement_bel(current_bel: float, prior_bel: float, seuil: float = 0.05) -> str:
+    mouvement = abs(current_bel - prior_bel) / prior_bel
+    si mouvement > seuil:
+        return f"ALERTE : Mouvement BEL {mouvement:.1%} dépasse le seuil {seuil:.1%}. Requiert une revue actuarielle."
+    return f"OK : Mouvement BEL {mouvement:.1%} dans la tolérance."
+
+@tool  
+def vérifier_cohérence_csm(ouverture_csm: float, ajustements: dict, clôture_csm: float) -> str:
+    fermeture_attendue = (
+        ouverture_csm 
+        + ajustements.get('intérêt_accretion', 0)
+        + ajustements.get('ajustement_expérience', 0)
+        - ajustements.get('libération_de_profit', 0)
+    )
+    différence = abs(fermeture_attendue - clôture_csm)
+    si différence > 0.01:
+        return f"ERREUR : Gap de cohérence CSM de {différence:.4f}. Requiert une enquête."
+    return f"OK : Cohérence CSM passe."
+
+llm = OllamaLLM(model="llama3.1:8b")
+outils = [vérifier_mouvement_bel, vérifier_cohérence_csm]
+
+agent_qc = create_openai_tools_agent(llm, outils, prompt)
+exécuteur_agence = AgentExecutor(agent=agent_qc, outils=outils, verbose=True)
+```
+
+L'agent reçoit les résultats de fermeture, exécute les outils QC, raisonne sur les sorties et produit un rapport qualité structuré — signalant des exceptions nécessitant une revue humaine.
+
+## Contrôle humain dans la boucle
+
+L'intelligence artificielle multi-agente pour la fermeture ne signifie pas la fermeture automatique complète. Sous les exigences AI Act et de bonnes pratiques de gouvernance, les humains restent dans le processus à des points décisionnels clés :
+
+- **Anomalies données** : agent signale, homme décide de poursuivre ou d'enquêter
+- **Mouvements BEL au-dessus du seuil** : agent explique, actuaire approuve ou rejette
+- **Exceptions modèle** : agent escalade automatiquement vers le propriétaire du modèle
+- **Signalement final** : Chief Actuary examine et approuve — cet étape est jamais automatisée
+
+L'agent gère le routine. Les humains se concentrent sur les exceptions et les décisions qui nécessitent un examen plus approfondi.
+
+## Quelles changements pour les actuaires ?
+
+Ce n'est pas question de remplacer les actuaires. Il s'agit de changer ce que font les actuaires.
+
+**Aujourd'hui** : 60% du temps de fermeture passé sur la manipulation de données, l'exécution de scripts, des vérifications manuelles et des réconciliations Excel.
+
+**Avec l'intelligence artificielle multi-agente** : 80% du temps de fermeture passé sur la revue des sorties agent, l'enquête exceptionnelle et les décisions actuarielles.
+
+L'actuaire devient le contrôleur qualité d'un processus assisté par IA — qui nécessite une compréhension plus profonde des méthodologies actuelles, pas moins.
+
+Les actuaires qui vont prospérer sont ceux qui comprennent à la fois la méthode actuarielle et les systèmes AI qui la gèrent. Ce que je construis exactement.
+
+## Statut actuel et étapes suivantes
+
+Je suis en train de construire un prototype d'un système multi-agents pour calculer la fermeture BEL IFRS 17. Le système utilise :
+
+- **LangChain** pour l'orchestration des agents
+- **Ollama + Llama 3.1 8B** exécutés localement sur RTX 5060
+- **Outils Python** pour le calcul de BEL et les contrôles qualité
+- **Streamlit** pour la interface d'examen humain
+
+Le projet sera disponible sous licence ouverte GitHub. C'est le plus ambitieux des projets dans mon portfolio — et celui que je pense être le plus pertinent pour le cycle réglementaire 2027-2028.
+
+Suivez le newsletter pour les mises à jour.

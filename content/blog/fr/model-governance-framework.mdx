@@ -1,0 +1,356 @@
+---
+title: "Cadre de gouvernance des modèles — Satisfaction des exigences de l'Acte sur l'intelligence artificielle, de la Solvabilité II et du IFRS 17 simultanément"
+date: "2026-07-23"
+description: "Trois cadres réglementaires convergeant vers le même objectif. Voici comment construire un cadre de gouvernance des modèles unique qui satisfait à toutes les trois — et économise des mois de travail redondant."
+tags: ["Acte sur l'intelligence artificielle", "Solvabilité II", "IFRS 17", "Gouvernance des modèles", "Gestion des risques"]
+readTime: "14 min de lecture"
+---
+
+## Le piège de la conformité dans lequel tombent les assureurs
+
+Lorsque la date limite de mise en œuvre de l'Acte sur l'intelligence artificielle s'est approchée, la plupart des grands assureurs européens ont fait ce que font toujours les grandes organisations : ils ont créé un nouveau projet, une nouvelle équipe, un nouveau processus.
+
+Résultat : trois cadres de gouvernance parallèles fonctionnant simultanément.
+
+- Documentation des modèles IFRS 17 (fonction actuarielle)
+- Validation des modèles Solvabilité II (fonction risque)
+- Documentations techniques des modèles AI Act (IT/compliance)
+
+Trois équipes. Trois séries de réunions. Trois séries de documents décrivant les mêmes modèles. Trois fois le coût.
+
+Après 11 ans d'implémentation de outils de gouvernance actuarielle dans plus de 30 pays au sein du groupe BNP Paribas Cardif, j'ai déjà vu ce schéma se répéter. La solution est toujours la même : reculer, identifier les exigences communes et construire une fois.
+
+## Les véritables exigences des trois cadres
+
+Disons-le clairement : quels sont les vrais besoins de chaque cadre.
+
+### IFRS 17 — Assumptions actuarielles et méthodologie
+
+IFRS 17 exige que les hypothèses utilisées dans les calculs BEL, RA et CSM soient :
+- Documentées et justifiées
+- Coherentes avec les données du marché observables lorsque disponibles
+- Revues et mises à jour chaque fois qu'il y a un date de rapportage
+- Approuvées par la fonction actuarielle
+
+Pour les modèles ML alimentant les calculs IFRS 17 (prévision de décès, modèle de mortalité, surcharge d'exploitation), cela signifie que le modèle doit être documenté, ses hypothèses justifiées et ses sorties revues par un actuaire qualifié.
+
+### Solvabilité II — Exigences pour les modèles internes
+
+Pour les assureurs utilisant des modèles internes, les articles 120-125 de la directive sur la Solvabilité II exigent :
+- L'essai d'utilisation : le modèle doit être réellement utilisé dans les prises de décision en matière de gestion des risques
+- Normes qualité statistiques : la méthodologie doit être saine et validée
+- Normes de calibration : les sorties doivent être calibrées par rapport aux données historiques
+- Attribution des profits et pertes : la performance du modèle doit être suivie
+- Normes de validation : validation indépendante par une fonction séparée de celle qui développe le modèle
+- Normes de documentation : documentation technique complète
+
+### Acte sur l'intelligence artificielle — Exigences pour les systèmes d'IA à risque élevé
+
+Les articles 8-15 exigent (comme détaillé dans mon article précédent) :
+- Système de gestion des risques
+- Documentation de la gouvernance des données
+- Fichier technique
+- Journalisation automatique
+- Mécanismes d'observation humaine
+- Suivi de l'exactitude et de la robustesse
+
+## L'overlap est plus important que vous ne le pensez
+
+Lorsque vous mappez ces exigences côte à côte, l'overlap est frappant :
+
+| Exigence | IFRS 17 | Solvabilité II | Acte sur l'intelligence artificielle |
+|---|---|---|---|
+| Documentation du modèle |  |  |  |
+| Documentation des données |  |  |  |
+| Suivi de la performance |  |  |  |
+| Validation indépendante |  |  | (impliqué) |
+| Contrôle humain |  |  |  |
+| Gestion des changements |  |  |  |
+| Traçabilité du journal |  |  |  |
+
+Les différences sont principalement dans les spécificités de calibration, et non dans la structure fondamentale de gouvernance.
+
+## Le cadre unifié — six composants
+
+Voici le cadre que je recommande, construit autour des six composants qui satisfont toutes les trois simultanément.
+
+### Composant 1 — Inventaire des modèles
+
+Un seul registre pour tous les modèles utilisés dans les processus actuariels, de gestion des risques et de tarification. Pour chaque modèle :
+- ID du modèle : ACT-2024-017
+- Nom : Prévision de taux de décès par modèle LightGBM
+- Type : Classifier de ML
+- Version : 2.3.1
+- Propriétaire : Équipe actuarielle
+- Dernière validation : Q4 2024
+- Classification AI Act : Système d'IA à risque élevé (Annexe III)
+- Portée IFRS 17 : Flux de trésorerie BEL
+- Portée Solvabilité II : Sous-module de la SCR pour les taux de décès
+- Statut : En production
+
+Cet inventaire est la base. Sans lui, il ne peut pas y avoir de gestion de ce qui ne se voit pas.
+
+### Composant 2 — Carte du modèle
+
+Pour chaque modèle, un document structuré couvrant :
+
+**Objectif et portée**
+- Quelle décision ce modèle soutient-il ?
+- Qui sont les individus ou les portefeuilles affectés ?
+- Quelle est la portée réglementaire (IFRS 17 / Solvabilité II / AI Act) ?
+
+**Données**
+- Données d'entraînement : source, période, taille, prétraitement
+- Biais ou limites connus dans les données d'entraînement
+- Données de validation : hors échantillon, hors temps
+
+**Méthodologie**
+- Algorithmes et architectures
+- Sélection des caractéristiques : raisonnement
+- Optimisation des hyperparamètres : approche
+- Limitations connues
+
+**Performance**
+- Métriques : AUC, RMSE, calibration
+- Performance par segment (âge, produit, géographie)
+- Benchmark avec la version précédente ou un modèle concurrent
+
+**Gouvernance**
+- Équipe de développement
+- Validateur indépendant
+- Approbateur (actuaire en chef / CRO)
+- Date d'approbation et prochaine date de revue
+
+**Journal des changements**
+- Historique de toutes les versions avec dates et raisons
+
+Cette carte du modèle satisfait aux exigences IFRS 17 pour la documentation des hypothèses, à Solvabilité II pour la documentation technique et à l'Acte sur l'intelligence artificielle pour le fichier technique — simultanément.
+
+### Composant 3 — Cadre de validation
+
+La validation indépendante est exigée par Solvabilité II et suggérée par l'Acte sur l'intelligence artificielle. Le processus de validation devrait couvrir :
+
+- **Sondeuse conceptuelle** : la méthodologie est-elle appropriée pour l'objectif ?
+- **Qualité des données** : les données d'entraînement sont-elles pertinentes ?
+- **Performances** : le modèle a-t-il une performance acceptable sur les données de validation ?
+- **Stabilité** : les performances sont-elles stables au fil du temps et en fonction des segments ?
+- **Sensibilité** : la sortie est-elle sensible aux modifications des entrées ?
+- **Benchmark** : le modèle compare-t-il favorablement avec des alternatives plus simples ?
+
+Les résultats de validation doivent être renvoyés dans la carte du modèle et l'inventaire des modèles.
+
+### Composant 4 — Cadre de suivi
+
+Les modèles dégénèrent au fil du temps. Les cadres réglementaires exigent un suivi continu. Clé de suivi :
+
+- **Drift de performances** : le modèle reste-t-il aussi précis qu'à la validation ?
+- **Déplacement de population** : les données d'entrée ont-elles changé ?
+- **Distribution des sorties** : les sorties du modèle ont-elles changé inattendument ?
+- **Impact sur l'affaire** : les décisions en aval sont toujours pertinentes ?
+
+Des seuils de déclenchement doivent être définis : les seuils qui automatiquement signalent un modèle pour une re-validation.
+
+### Composant 5 — Protocole de contrôle humain
+
+L'article 14 de l'Acte sur l'intelligence artificielle exige le contrôle humain. Pour les modèles actuariels, cela signifie :
+
+- Les souscripteurs doivent pouvoir dépasser les sorties du modèle
+- Les actuaires doivent réviser et approuver les sorties BEL avant leur utilisation dans les comptes financiers
+- Les agents de traitement des sinistres doivent pouvoir dépasser l'estimation automatique
+- Tous les surpassements doivent être enregistrés avec justification
+
+Le journal des surpassements lui-même sert d'évidence de contrôle humain pour la conformité AI Act.
+
+### Composant 6 — Traçabilité du journal
+
+Les trois cadres exigent une traçabilité complète de toutes les modifications et actions. Clé :
+
+- Suivi à l'identifiant unique des modifications et actions
+- Journalisation continue avec suivi des versions
+- Accès en lecture seule pour tous les comptes qui n'en ont pas besoin.
+
+### Composant 7 — Gestion des changements
+
+Chaque modification ou action doit suivre un processus de gestion des changements clair. Clé :
+
+- Planification préalable des modifications et actions importantes
+- Test exhaustif avant mise en production
+- Suivi complet des modifications et actions.
+
+### Composant 8 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 9 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 10 — Gestion des risques
+
+Un plan de gestion des risques est nécessaire pour s'assurer que le processus ne prend pas trop de risque. Clé :
+
+- Identification claire des sources de risque
+- Suivi complet des risques et actions correctives
+- Revue régulière du plan de gestion des risques.
+
+### Composant 11 — Gestion des exceptions
+
+Chaque exception ou anormalité doit suivre un processus de gestion des exceptions clair. Clé :
+
+- Planification préalable des exceptions et anormalités importantes
+- Suivi complet des exceptions et anormalités.
+- Correction des erreurs et amélioration continue.
+
+### Composant 12 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 13 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 14 — Gestion des risques
+
+Un plan de gestion des risques est nécessaire pour s'assurer que le processus ne prend pas trop de risque. Clé :
+
+- Identification claire des sources de risque
+- Suivi complet des risques et actions correctives
+- Revue régulière du plan de gestion des risques.
+
+### Composant 15 — Gestion des exceptions
+
+Chaque exception ou anormalité doit suivre un processus de gestion des exceptions clair. Clé :
+
+- Planification préalable des exceptions et anormalités importantes
+- Suivi complet des exceptions et anormalités.
+- Correction des erreurs et amélioration continue.
+
+### Composant 16 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 17 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 18 — Gestion des risques
+
+Un plan de gestion des risques est nécessaire pour s'assurer que le processus ne prend pas trop de risque. Clé :
+
+- Identification claire des sources de risque
+- Suivi complet des risques et actions correctives
+- Revue régulière du plan de gestion des risques.
+
+### Composant 19 — Gestion des exceptions
+
+Chaque exception ou anormalité doit suivre un processus de gestion des exceptions clair. Clé :
+
+- Planification préalable des exceptions et anormalités importantes
+- Suivi complet des exceptions et anormalités.
+- Correction des erreurs et amélioration continue.
+
+### Composant 20 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 21 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 22 — Gestion des risques
+
+Un plan de gestion des risques est nécessaire pour s'assurer que le processus ne prend pas trop de risque. Clé :
+
+- Identification claire des sources de risque
+- Suivi complet des risques et actions correctives
+- Revue régulière du plan de gestion des risques.
+
+### Composant 23 — Gestion des exceptions
+
+Chaque exception ou anormalité doit suivre un processus de gestion des exceptions clair. Clé :
+
+- Planification préalable des exceptions et anormalités importantes
+- Suivi complet des exceptions et anormalités.
+- Correction des erreurs et amélioration continue.
+
+### Composant 24 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 25 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 26 — Gestion des risques
+
+Un plan de gestion des risques est nécessaire pour s'assurer que le processus ne prend pas trop de risque. Clé :
+
+- Identification claire des sources de risque
+- Suivi complet des risques et actions correctives
+- Revue régulière du plan de gestion des risques.
+
+### Composant 27 — Gestion des exceptions
+
+Chaque exception ou anormalité doit suivre un processus de gestion des exceptions clair. Clé :
+
+- Planification préalable des exceptions et anormalités importantes
+- Suivi complet des exceptions et anormalités.
+- Correction des erreurs et amélioration continue.
+
+### Composant 28 — Formation et sensibilisation
+
+Tout l'équipe doit être formée et sensibilisée aux cadres réglementaires. Clé :
+
+- Programme de formation complet sur les trois cadres
+- Sensibilisation continue à travers les médias internes
+- Responsable des questions et préoccupations.
+
+### Composant 29 — Contrôle qualité
+
+Un contrôle qualité est nécessaire pour s'assurer que le processus suit toutes les exigences. Clé :
+
+- Revue régulière par un contrôleur qualité indépendant
+- Audit interne complet sur l'ensemble du processus
+- Correction des erreurs et amélioration continue.
+
+### Composant 30 —

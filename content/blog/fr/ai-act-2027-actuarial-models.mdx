@@ -1,0 +1,134 @@
+---
+title: "Loi sur l'intelligence artificielle de 2027 - Quel est son impact sur les modèles actuariels"
+date: "2026-07-23"
+description: "La loi européenne relative à l'IA classe de nombreuses modèles actuariels comme des systèmes d'IA à risque élevé. Voici ce que doivent savoir les actuaires avant la date butoir de décembre 2027."
+tags: ["Loi sur l'IA", "Risque du modèle", "Gouvernance", "IFRS 17", "Solvabilité II", "Réglementation"]
+readTime: "12 min de lecture"
+---
+
+## La date qui fait peur à la plupart des actuaires
+
+Le 2 décembre 2027, la loi sur l'intelligence artificielle entre en vigueur pour les systèmes d'IA autonomes à risque élevé (Annexe III). Le 2 août 2028, elle s'étend aux IA intégrées dans les produits réglementés (Annexe I).
+
+Pour l'industrie de l'assurance, ce n'est pas une préoccupation réglementaire lointaine. Il s'agit d'un délai opérationnel concret qui affecte les modèles de tarification, les algorithmes de réserve, les systèmes d'underwriting et - potentiellement - tout modèle actuariel qui prend ou influencent des décisions concernant des individus.
+
+La plupart des actuaires que je rencontre ne sont pas au courant de cette loi. La plupart des services informatiques savent qu'il existe une loi sur l'IA, mais ne comprennent pas lesquels sont affectés par les modèles. Le fossé entre le texte réglementaire et la réalité opérationnelle est exactement là où les praticiens comme moi travaillent.
+
+## Qu'est-ce que la loi sur l'intelligence artificielle ?
+
+La loi européenne relative à l'IA (Régulation 2024/1689) constitue la première cadre juridique complet pour les systèmes d'IA dans le monde. Elle utilise une approche fondée sur le risque :
+
+- **Risque inacceptable** : Interdit formellement (scoring social, surveillance biométrique en temps réel)
+- **Risque élevé** : Autorisé mais avec des exigences strictes (documentation, contrôle humain, précision, robustesse)
+- **Risque limité** : Obligations de transparence seulement
+- **Risque minimal** : Pas d'obligation spécifique
+
+La question critique pour les actuaires : **sont nos modèles à risque élevé ?**
+
+## Lesquels des modèles actuariels sont à risque élevé ?
+
+L'Annexe III de la loi sur l'intelligence artificielle liste les catégories de systèmes d'IA à risque élevé. La plus pertinente pour l'assurance est :
+
+**Article 6(2) — Systèmes d'IA utilisés en :**
+
+- Accès aux services privés et bénéfices publics
+- Évaluation du crédit
+- Évaluation de risque et tarification dans l'assurance-vie et santé
+
+Ce dernier point est explicite : **les systèmes d'IA utilisés pour l'évaluation de risque et la tarification dans l'assurance vie et santé sont considérés à risque élevé en vertu de la loi sur l'intelligence artificielle.**
+
+Cela couvre :
+
+- Les modèles ML (Gradient Boosting Machine, LightGBM, XGBoost) pour les assurances santé, vie et protection
+- Les modèles d'évaluation des scores de sélection des assureurs
+- Les systèmes automatisés d'assistance aux demandes d'indemnisation
+- Tout modèle qui influence la décision individuelle
+
+**Et que dire des modèles de réserve et ALM ?**
+
+La situation est moins claire. Les modèles de réserve IBNR, les calculs BEL et les SCR ne font pas directement des décisions concernant les individus - ils évaluent les estimations au niveau du portefeuille. L'interprétation réglementaire est encore en évolution.
+
+Cependant, si un modèle de réserve alimente une décision qui affecte les assureurs individuels (traitement des demandes d'indemnisation, renouvellement des contrats), il peut être pertinent.
+
+Ma lecture : soyez conservateurs. Si votre modèle touche aux décisions individuelles, supposez qu'il soit à risque élevé jusqu'à ce que EIOPA publie plus de directives claires.
+
+## Lesquels sont les systèmes d'IA à risque élevé qui doivent se conformer ?
+
+Les systèmes d'IA à risque élevé en vertu de la loi sur l'intelligence artificielle doivent satisfaire aux exigences des articles 8 à 15 :
+
+**1. Système de gestion du risque (Article 9)**
+Un processus documenté pour identifier, analyser et atténuer les risques tout au long du cycle de vie du modèle. Cela ressemble aux cadres de gestion des risques déjà exigés par certains superviseurs prudentiels - mais il s'agit maintenant d'une obligation légale.
+
+**2. Gouvernance des données (Article 10)**
+Les données d'apprentissage, les données de validation et les données de test doivent être documentées. Pertinent pour les modèles ML de tarification : vous devez démontrer que vos données d'apprentissage sont représentatives, exemptes de biais discriminatoires et appropriées à l'utilisation.
+
+**3. Documentation technique (Article 11)**
+Avant leur déploiement, un fichier technique doit être préparé couvrant l'architecture du modèle, les données d'apprentissage, les indicateurs de performance, les limites connues. Pensez-y comme une carte obligatoire du modèle.
+
+**4. Transparence et journalisation (Article 12)**
+Journalisation automatique des opérations. Pour les modèles de tarification : enregistrement des logs desquels version du modèle a produit quel résultat, quand et pour qui.
+
+**5. Contrôle humain (Article 14)**
+Les systèmes d'IA à risque élevé doivent être conçus pour permettre un contrôle humain. Les décisions entièrement automatisées sans revue humaine sont problématiques. Pour les modèles actuariels : les agents doivent pouvoir contrecarrer les sorties du modèle.
+
+**6. Précision, robustesse et cybersécurité (Article 15)**
+Les modèles doivent être testés pour leur précision dans différentes tranches de population. La dégradation de la performance sur le temps doit être surveillée.
+
+## La convergence avec Solvabilité II et IFRS 17
+
+C'est là où cela devient intéressant pour les praticiens.
+
+**La révision de Solvabilité II de 2027** nécessite une documentation et une gouvernance améliorées des modèles internes. 
+
+**IFRS 17** exige la documentation explicite des hypothèses actuarielles et de la méthodologie. 
+
+**Loi sur l'IA** exige une documentation technique, une gouvernance des données et un contrôle humain pour les systèmes d'IA à risque élevé.
+
+Ces trois cadres réglementaires convergent vers le même objectif : **les modèles expliquables, auditables et avec contrôle humain**. La bonne nouvelle est que si vous confectionnez une structure de gouvernance des modèles bien conçue, elle satisfait simultanément aux exigences des trois.
+
+C'est là où la plupart des organisations manquent l'insight : elles construisent trois processus de conformité séparés alors qu'une seule structure de gouvernance de modèles peut satisfaire à toutes les trois.
+
+## Ce que vous devez faire avant le 2 décembre 2027
+
+**Étape 1 - Inventaire des systèmes d'IA**
+Listez tous les modèles qui prennent ou influencent la décision concernant les individus. Pour chaque modèle : type de modèle, données d'apprentissage, champ décisionnel actuel, niveau de documentation actuel.
+
+**Étape 2 - Classification du risque**
+Appliquez les critères de l'Annexe III. Faites étiqueter les modèles susceptibles d'être à risque élevé. Lorsqu'il y a incertitude, consultez un conseiller juridique familier avec la loi sur l'intelligence artificielle.
+
+**Étape 3 - Analyse des lacunes**
+Pour chaque modèle à risque élevé, évaluez la conformité aux articles 8-15. Où sont les lacunes ? Documentation manquante ? Pas de journalisation ? Pas de mécanisme d'ajout humain ?
+
+**Étape 4 - Schéma de planification de réparation**
+Construirez un plan de projet pour combler les lacunes avant le 2 décembre 2027. Cela est une tâche importante - commencez maintenant.
+
+**Étape 5 - Cadre de gouvernance des modèles**
+Concevez ou adaptez votre cadre de gestion du risque des modèles pour répondre aux exigences de la loi sur l'intelligence artificielle. Intégrer avec les cadres existants de Solvabilité II et IFRS 17 là où possible.
+
+## Ce que je construis
+
+En tant que partie intégrante de mon portefeuille open source, je développe un **tableau de bord de la gouvernance des modèles** - une outil qui aide les équipes actuariennes :
+
+- à conserver l'inventaire des systèmes d'IA/ML
+- suivre le statut de conformité par rapport aux exigences de la loi sur l'intelligence artificielle
+- générer automatiquement les cartes de modèles
+- surveiller les performances des modèles au fil du temps
+
+Cela correspond directement à l'esprit du condor qui est géré pour plus de 10 ans chez BNP Paribas Cardif, mais étendu à la gouvernance d'IA.
+
+Le projet sera open source sur GitHub. Suivez ma blog ou vous abonner au newsletter pour être notifié lorsque le projet sera prêt.
+
+## Dates clés à rappeler
+
+| Date | Obligation |
+|---|---|
+| Maintenant | Commencez l'inventaire et analyse des lacunes |
+| 2026 | Attente de la directive d'EIOPA sur l'application de la loi sur l'intelligence artificielle |
+| 2 décembre 2027 | Les systèmes d'IA autonomes à risque élevé (Annexe III) |
+| 2 août 2028 | L'IA intégrée dans les produits réglementés (Annexe I) |
+
+## Ressources
+
+- Loi sur l'intelligence artificielle complète : Journal officiel de l'UE
+- Directive d'EIOPA - Loi sur l'IA
+- Cadre de gouvernance des modèles

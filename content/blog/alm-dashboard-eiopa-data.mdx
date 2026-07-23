@@ -1,0 +1,121 @@
+---
+title: "Building an ALM Dashboard with Real EIOPA Data"
+date: "2026-07-23"
+description: "How I built a real-time ALM dashboard using official EIOPA risk-free rate curves — computing duration gap, SCR Market and interest rate sensitivities."
+tags: ["ALM", "Solvency II", "EIOPA", "Python", "Streamlit"]
+readTime: "10 min read"
+---
+
+## Why EIOPA data matters for ALM
+
+Most ALM tutorials use Yahoo Finance or synthetic data. In practice, Solvency II requires using the official EIOPA risk-free rate curve — published monthly — to discount your best estimate liabilities.
+
+Using the wrong discount curve means wrong BEL, wrong SCR, wrong ratio. Regulators notice.
+
+In this article, I walk through how I built an ALM dashboard using real EIOPA curves, computing duration gap and SCR Market in real time.
+
+## What is the EIOPA risk-free rate curve?
+
+The EIOPA risk-free rate (RFR) curve is the official discount curve used by all European insurers under Solvency II to calculate the Best Estimate of Liabilities (BEL).
+
+It is derived from swap rates (up to the Last Liquid Point — LLP at 20 years for EUR) and extrapolated toward the Ultimate Forward Rate (UFR, currently 3.45% for EUR) using the Smith-Wilson method.
+
+Key parameters for EUR curve:
+- **LLP**: 20 years
+- **UFR**: 3.45%
+- **Alpha** (convergence speed): 0.128562
+- **Credit Risk Adjustment**: -10bps
+
+EIOPA publishes the curve monthly on their website. For this dashboard, I use Yahoo Finance as a proxy for real-time rates, with the same maturity structure.
+
+## The ALM model
+
+### Balance sheet structure
+
+I modelled a simplified life insurer balance sheet:
+
+**Assets:**
+- Government bonds (OAT): 2Y, 5Y, 10Y, 30Y
+- Equities: 10% allocation
+- Total: ~475 M EUR
+
+**Liabilities:**
+- Savings PM (8Y duration)
+- Pension PM (15Y duration)
+- Protection PM (3Y duration)
+- Total: ~430 M EUR
+
+### Duration calculation
+
+For each asset and liability, I compute the Macaulay duration:
+
+```python
+def duration_macaulay(cash_flows, maturities, rate):
+    pv_flows = [cf / (1 + rate) ** t 
+                for cf, t in zip(cash_flows, maturities)]
+    total_pv = sum(pv_flows)
+    duration = sum(t * pv / total_pv 
+                   for t, pv in zip(maturities, pv_flows))
+    return duration
+```
+
+The **duration gap** is then:
+A positive gap means assets are more rate-sensitive than liabilities. A +100bps shock reduces equity value.
+
+## SCR Market calculation
+
+Under Solvency II Standard Formula, SCR Market aggregates six sub-modules using a correlation matrix:
+
+```python
+import numpy as np
+
+scr_vector = np.array([scr_rates, scr_equity, scr_spread])
+
+correlation = np.array([
+    [1.00, 0.00, 0.00],
+    [0.00, 1.00, 0.75],
+    [0.00, 0.75, 1.00]
+])
+
+scr_market = np.sqrt(scr_vector @ correlation @ scr_vector)
+```
+
+The **SCR Ratio** tells you how many times your own funds cover your capital requirement:
+A ratio above 100% means the insurer is solvent. Below 100% triggers regulatory intervention.
+
+## The dashboard
+
+I built the dashboard with Streamlit and Plotly. Key features:
+
+- **Live yield curve** from Yahoo Finance (proxy for EIOPA)
+- **Interactive spread slider** — adjust liability discount spread
+- **Duration gap visualization** — bar chart comparing asset vs liability duration
+- **SCR Market pie chart** — decomposition by risk type
+- **Sensitivity table** — impact on own funds for +100bp, +200bp, -100bp shocks
+
+## What I learned
+
+**The data pipeline is the hard part.** Getting clean, consistent yield curve data at the right maturities is more work than the actual ALM calculations.
+
+**Duration gap alone is not enough.** A zero duration gap is the goal for parallel rate shocks, but non-parallel shifts (twist, butterfly) require key rate durations — a more advanced topic.
+
+**SST differs from SII.** The Swiss Solvency Test uses a TVaR 99% instead of VaR 99.5%, and has a one-year horizon with a different stress scenario set. The ALM logic is similar but calibration differs.
+
+## Code and demo
+
+The full dashboard is open source on GitHub: [Ama19902023/dashboard-alm](https://github.com/Ama19902023/dashboard-alm)
+
+It runs locally with:
+
+```bash
+git clone https://github.com/Ama19902023/dashboard-alm
+pip install -r requirements.txt
+streamlit run src/app.py
+```
+
+## What's next
+
+- Integrate real EIOPA curve via official API
+- Add Volatility Adjustment and Matching Adjustment
+- Implement key rate duration analysis
+- Add SST stress scenarios for Swiss market

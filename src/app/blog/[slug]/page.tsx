@@ -3,10 +3,9 @@ import path from 'path'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import { marked } from 'marked'
-import { headers } from 'next/headers'
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const slug = params?.slug || 'fine-tuning-llm-actuarial'
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const filePath = path.join(process.cwd(), 'content/blog', slug + '.mdx')
   const fileContent = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(fileContent)

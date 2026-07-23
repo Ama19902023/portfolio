@@ -1,0 +1,115 @@
+---
+title: "Swiss Solvency Test vs Solvency II — Key Differences for Practitioners"
+date: "2026-07-23"
+description: "A practical comparison of SST and SII from a practitioner who has worked with both frameworks — covering methodology, calibration and operational differences."
+tags: ["SST", "Solvency II", "Switzerland", "Capital Modelling", "Risk"]
+readTime: "12 min read"
+---
+
+## Why this matters if you want to work in Switzerland
+
+If you are a European actuary considering a move to Switzerland — Swiss Re, Zurich Insurance, Helvetia, Baloise — understanding the Swiss Solvency Test (SST) is not optional.
+
+The SST is the Swiss regulatory capital framework, equivalent to Solvency II in Europe but with significant methodological differences. Recruiters at Swiss insurers assume you know these differences. Most French actuaries do not.
+
+This article is a practical comparison based on public documentation and my experience implementing Solvency II at BNP Paribas Cardif across 30+ countries.
+
+## Framework overview
+
+Both SST and Solvency II share the same objective: ensure insurers can meet their obligations with high probability over a one-year horizon.
+
+| | Solvency II | Swiss Solvency Test |
+|---|---|---|
+| Regulator | EIOPA (EU) | FINMA (Switzerland) |
+| Risk measure | VaR 99.5% | Expected Shortfall (TVaR) 99% |
+| Horizon | 1 year | 1 year |
+| Balance sheet | Market-consistent | Market-consistent |
+| Standard formula | Yes | Yes (but less used) |
+| Internal models | Allowed | Widely used |
+| Reporting | Annual (SFCR, RSR) | Annual (SST report to FINMA) |
+
+## The key methodological difference — TVaR vs VaR
+
+This is the most important difference and the one most actuaries miss.
+
+**Solvency II** uses **VaR 99.5%** — the loss that is not exceeded with 99.5% probability over one year. It tells you the threshold loss at a specific quantile.
+
+**SST** uses **TVaR 99%** (also called Expected Shortfall or CVaR) — the expected loss given that you are already in the worst 1% of scenarios. It is the average of all losses beyond the 99th percentile.
+
+Why does this matter in practice?
+
+TVaR is more sensitive to tail risk. A distribution with fat tails (natural catastrophes, pandemics, financial crises) will produce a higher TVaR relative to VaR. This means SST tends to be more conservative for insurers with significant tail exposures.
+
+For a life insurer with stable mortality experience, the difference may be small. For a reinsurer with nat cat exposure, it can be substantial.
+
+## Market risk — similar structure, different calibration
+
+Both frameworks decompose market risk into sub-modules:
+
+- Interest rate risk
+- Equity risk
+- Credit spread risk
+- Real estate risk
+- Currency risk
+- Concentration risk
+
+The structure is similar, but calibrations differ:
+
+**Equity shock:**
+- SII: -39% (Type 1), -49% (Type 2)
+- SST: Scenario-based, typically more severe for Swiss equities
+
+**Interest rate shock:**
+- SII: Relative up/down shocks (EIOPA prescribed)
+- SST: Absolute and relative scenarios defined by FINMA
+
+**Key rate duration:**
+SST places more emphasis on key rate duration analysis — the sensitivity of the balance sheet to non-parallel yield curve movements. This is more sophisticated than the parallel shock approach in the SII standard formula.
+
+## Life underwriting risk
+
+Both frameworks cover mortality, longevity, disability, lapse and expense risk.
+
+A specific SST feature is the **biometric scenario**: FINMA prescribes specific stress scenarios for Swiss population mortality and morbidity, calibrated on Swiss data (not European averages as in SII).
+
+This matters for Swiss life insurers whose portfolios are 100% Swiss policyholders — the SII standard formula European calibration would underestimate or overestimate certain risks.
+
+## Internal models — much more common in Switzerland
+
+In Solvency II, internal models require EIOPA approval and are used by a minority of large insurers.
+
+In Switzerland, **most large insurers and all major reinsurers use internal models**. Swiss Re, Zurich Insurance, and others have sophisticated stochastic models that go well beyond the standard formula.
+
+This creates a higher bar for actuaries working at Swiss firms — you need to understand stochastic capital modelling, economic scenario generators (ESG), and Monte Carlo simulation.
+
+## Practical implications for actuaries
+
+**If you come from a SII background:**
+
+1. You understand market-consistent valuation — this transfers directly
+2. You need to learn TVaR calculation — it is straightforward mathematically
+3. You need to understand Swiss-specific calibrations
+4. Internal model experience is valuable — develop it if you can
+
+**The SST report to FINMA** is the Swiss equivalent of the RSR. It includes:
+- Target capital calculation
+- Risk-bearing capital
+- SST ratio (RBC / Target Capital)
+- Sensitivity analysis
+- Own risk assessment
+
+## What I am working on
+
+As part of my transition toward Swiss opportunities, I am:
+- Studying FINMA SST technical documentation
+- Adding SST stress scenarios to my ALM dashboard
+- Building a comparison tool: SII Standard Formula vs SST Standard Model
+
+The code will be open source on GitHub when ready.
+
+## Resources
+
+- FINMA SST Technical Document (available on finma.ch)
+- SST White Paper 2024
+- Swiss Insurance Association (SVV) publications
+- EIOPA vs FINMA: regulatory comparison papers

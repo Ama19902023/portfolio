@@ -4,6 +4,7 @@ import Expertise from '../components/Expertise'
 import Projets from '../components/Projets'
 import About from '../components/About'
 import Services from '../components/Services'
+import Newsletter from '../components/Newsletter'
 import Blog from '../components/Blog'
 import Contact from '../components/Contact'
 
@@ -16,6 +17,7 @@ export default function Home() {
       <Projets />
       <About />
       <Services />
+      <Newsletter />
       <Blog />
       <Contact />
     </main>

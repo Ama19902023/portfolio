@@ -6,7 +6,7 @@ import Navbar from '../../../components/Navbar'
 
 export default function BlogFrPage() {
   const blogDir = path.join(process.cwd(), 'content/blog/fr')
-  const files = fs.readdirSync(blogDir)
+  const files = fs.readdirSync(blogDir).filter((f) => f.endsWith('.mdx'))
   
   const articles = files.map((filename) => {
     const filePath = path.join(blogDir, filename)

@@ -14,9 +14,9 @@ export default function Navbar() {
           <a href="#contact" style={{color: '#6b7280', textDecoration: 'none'}}>Contact</a>
         </div>
         <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
-          <a href="/blog" style={{color: '#6b7280', textDecoration: 'none', fontSize: '13px', fontWeight: '600'}}>EN</a>
+          <a href="/" style={{color: '#6b7280', textDecoration: 'none', fontSize: '13px', fontWeight: '600'}}>EN</a>
           <span style={{color: '#333'}}>|</span>
-          <a href="/fr/blog" style={{color: '#6b7280', textDecoration: 'none', fontSize: '13px', fontWeight: '600'}}>FR</a>
+          <a href="/fr" style={{color: '#6b7280', textDecoration: 'none', fontSize: '13px', fontWeight: '600'}}>FR</a>
           <a href="mailto:aminemeddour90@gmail.com" style={{backgroundColor: '#00ff88', color: 'black', fontSize: '14px', fontWeight: '700', padding: '8px 20px', borderRadius: '8px', textDecoration: 'none', marginLeft: '8px'}}>
             Hire me
           </a>

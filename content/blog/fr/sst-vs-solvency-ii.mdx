@@ -1,109 +1,121 @@
 ---
-title: "Test de solvabilité suisse vs Solvabilité II — Principales différences pour les praticiens"
+Voici la traduction de l'article en français professionnel :
+
+---
+title: "Swiss Solvency Test contre Solvency II — Principales différences pour les professionnels"
 date: "2026-07-23"
-description: "Une comparaison pratique du SST et du SII à partir d'une perspective de praticien qui a travaillé avec ces deux cadres — couvrant méthodologie, calibration et différences opérationnelles."
-tags: ["SST", "Solvabilité II", "Suisse", "Modélisation du capital", "Risque"]
+description: "Une comparaison pratique de SST et SII à partir d'une perspective d'un praticien ayant travaillé avec les deux frameworks — couvrant méthodologie, calibration et différences opérationnelles."
+tags: ["SST", "Solvency II", "Suisse", "Modélisation du Capital", "Risque"]
 readTime: "12 min de lecture"
+---
 
-## Pourquoi cela importe si vous souhaitez travailler en Suisse
+## Pourquoi cela est important si vous souhaitez travailler en Suisse
 
-Si vous êtes un actuaire européen envisageant de déménager en Suisse — Swiss Re, Zurich Assurance, Helvetia, Baloise — il est indispensable d'appréhender le Test de solvabilité suisse (SST).
+Si vous êtes un actuaire européen qui envisage un déplacement en Suisse — Swiss Re, Zurich Assurance, Helvetia, Baloise — comprendre le Swiss Solvency Test (SST) n'est pas optionnel.
 
-Le SST est le cadre réglementaire suisse du capital des assureurs, équivalent à la Solvabilité II en Europe mais avec des différences méthodologiques significatives. Les recruteurs dans les sociétés d'assurance suisses supposent que vous connaissez ces différences. La plupart des actuaires français n'en ont pas connaissance.
+Le SST est le cadre réglementaire suisse de la capitalisation des assureurs, équivalent à Solvency II en Europe mais avec des différences méthodologiques significatives. Les recruteurs d'assureurs suisses supposent que vous connaissez ces différences. La plupart des actuaires français ne le connaissent pas.
 
-Cet article est une comparaison pratique basée sur la documentation publique et sur mon expérience de mise en œuvre de la Solvabilité II au BNP Paribas Cardif dans plus de 30 pays.
+Cet article est une comparaison pratique basée sur la documentation publique et mon expérience en mettant en œuvre Solvency II chez BNP Paribas Cardif dans 30+ pays.
 
-## Aperçu du cadre
+## Présentation des frameworks
 
-SST et Solvabilité II partagent l'objectif commun d'assurer que les assureurs puissent répondre à leurs obligations avec une probabilité élevée sur un horizon d'une année.
+Les deux SST et SII partagent la même objectif : s'assurer que les assureurs peuvent rencontrer leurs obligations avec une probabilité élevée sur un horizon de un an.
 
-| | Solvabilité II | Test de solvabilité suisse |
+| | Solvency II | Swiss Solvency Test |
 |---|---|---|
 | Régulateur | EIOPA (UE) | FINMA (Suisse) |
-| Mesure de risque | VaR 99,5% | Expected Shortfall (TVaR) 99% |
+| Mesure de risque | VaR 99,5 % | TVaR 99 % (ESG) |
 | Horizon | 1 an | 1 an |
-| État de solde | Considération du marché | Considération du marché |
-| Formule standard | Oui | Oui (mais moins utilisée) |
-| Modèles internes | Autorisés | Utilisés largement |
-| Rapport | Annuel (SFCR, RSR) | Annuel (rapport de SST à FINMA) |
+| Bilan comptable | Considérations du marché | Considérations du marché |
+| Formulaire standard | Oui | Oui (mais moins utilisé) |
+| Modèles internes | Autorisé | Couramment utilisé |
+| Reporting | Annuel (SFCR, RSR) | Annuel (rapport SST à FINMA) |
 
 ## La principale différence méthodologique — TVaR vs VaR
 
-C'est la différence la plus importante et celle que les actuaires manquent le plus.
+C'est la différence la plus importante et celle que les actuaires manquent le plus souvent.
 
-**La Solvabilité II** utilise **VaR 99,5%** — perte qui n'est pas dépassée avec une probabilité de 99,5 % sur un an. Elle indique le seuil de perte à un quantile spécifique.
+**Solvency II** utilise **VaR 99,5 %** — la perte qui n'est pas dépassée avec une probabilité de 99,5 % sur un an. Elle indique le seuil de perte à une quantile spécifique.
 
-**Le SST** utilise **TVaR 99%** (appelé également Expected Shortfall ou CVaR) — la perte attendue étant donné que vous êtes déjà dans les 1 % des scénarios les plus défavorables. C'est l'ensemble de toutes les pertes au-delà du 99ème percentile.
+**SST** utilise **TVaR 99%** (appelé également ESG ou CVaR) — la perte attendue étant donné que vous êtes déjà dans les 1% les plus mauvais des scénarios. Il s'agit de l'ensemble de toutes les pertes au-delà du 99ème percentile.
 
-Pourquoi cela compte en pratique ?
+Pourquoi cela compte-t-il en pratique?
 
-TVaR est plus sensible aux risques de queue. Une distribution avec des queues épaisses (catastrophes naturelles, pandémies, crises financières) produira un TVaR supérieur à VaR. Cela signifie que le SST tend à être plus prudent pour les assureurs ayant des exposures significatives dans la queue de la loi.
+TVaR est plus sensible aux risques de queue. Une distribution avec des queues épaisses (catastrophes naturelles, pandémies, crises financières) produira un TVaR supérieur à VaR. Cela signifie que le SST tend à être plus prudent pour les assureurs avec des exposures significatives dans la queue.
 
-Pour une assurance vie avec une expérience de mortalité stable, la différence peut être mineure. Pour un réassureur avec exposition aux catastrophes naturelles, cela peut être considérable.
+Pour une assurance-vie avec expérience de mortalité stable, la différence peut être faible. Pour un réassureur avec exposition aux catastrophes naturelles, il peut être considérable.
 
 ## Risque de marché — structure similaire, calibration différente
 
-Les deux cadres décomposent le risque de marché en sous-modules :
+Les deux frameworks décomposent le risque de marché en sous-modules :
 
-- Risque d'intérêt
-- Risque d'actions
-- Différal de crédit
+- Risque de taux d'intérêt
+- Risque sur les actions
+- Spread de crédit
 - Risque immobilier
 - Risque de change
-- Concentration
+- Concentration de risques
 
 La structure est similaire, mais les calibrations diffèrent :
 
-**Choc d'action :**
+**Choc sur les actions :**
 - SII : -39% (Type 1), -49% (Type 2)
-- SST : Basé sur des scénarios — plus sévères pour les actions suisses en général
+- SST : En fonction de scénarios, généralement plus sévères pour les actions suisses
 
-**Choc d'intérêt :**
-- SII : Chocs relatif montée/tombée (préscription EIOPA)
+**Choc sur les taux d'intérêt :**
+- SII : Chocs relativement montant/bas (préconisés par EIOPA)
 - SST : Scénarios absolus et relatifs définis par FINMA
 
-**Durée clé de taux :**
-Le SST donne plus d'importance à l'analyse de la durée clé des taux — sensibilité du bilan au mouvements non parallèles de la courbe des rendements. Cela est plus sophistiqué que l'approche choc parallèle dans la formule standard SII.
+**Durée clé :**
+SST place plus d'accent sur l'analyse de la durée clé — la sensibilité du bilan comptable aux mouvements non parallèles des courbes de taux. Cela est plus sophistiqué que l'approche choc parallèle dans le formulaire standard SII.
 
-## Risque d'assurance vie
+## Risque d'underwriting
 
-Les deux cadres couvrent le risque de mortalité, de longévité, de déficience et de décès ainsi que les pertes en raison des démissions et des coûts.
+Les deux frameworks couvrent les risques de mortalité, de longévité, de invalidité, de décès et d'abandon.
 
-Une spécificité du SST est la **scénario biométrique** : FINMA prescrit des scénarios d'effort pour la mortalité et la morbidité de la population suisse, calibrés sur les données suisses (et non les moyennes européennes comme dans la formule standard SII).
+Un aspect spécifique du SST est la **scénario biométrique** : FINMA prescrit des scénarios de stress pour la mortalité et la morbidité suisses, calibrés sur les données suisses (et non sur les moyennes européennes comme le SII).
 
-Cela compte pour les assureurs vie en Suisse dont les portefeuilles sont composés à 100 % de clients suisses — la calibration standard SII serait soit sous-estimée, soit sur-estimée.
+Cela compte pour les assureurs-vie suisses dont les portefeuilles sont 100 % d'assurés suisses — le formulaire standard SII sous-estime ou surestime certains risques.
 
-## Modèles internes — beaucoup plus courants en Suisse
+## Modèles internes — beaucoup plus couramment utilisé en Suisse
 
-Dans la Solvabilité II, les modèles internes nécessitent l'approbation d'EIOPA et sont utilisés par une minorité de grandes assureurs.
+Dans Solvency II, les modèles internes nécessitent l'autorisation de EIOPA et sont utilisés par une minorité de grands assureurs.
 
-En Suisse, **la plupart des grandes assureurs et tous les réassureurs importants utilisent des modèles internes**. Swiss Re, Zurich Assurance et autres disposent de modèles stochastiques sophistiqués qui dépassent largement la formule standard.
+En Suisse, **la plupart des grands assureurs et tous les réassureurs majeurs utilisent des modèles internes**. Swiss Re, Zurich Assurance et d'autres ont des modèles stochastiques sophistiqués qui dépassent largement le formulaire standard.
 
-Cela crée un plus grand défi pour les actuaires travaillant dans les sociétés suisses — il faut comprendre la modélisation du capital stochastique, les générateurs de scénarios économiques (ESG) et les simulations de Monte Carlo.
+Cela crée un barème plus élevé pour les actuaires travaillant dans des sociétés suisses — vous devez comprendre la modélisation stochastique du capital, les générateurs de scénarios économiques (ESG) et la simulation Monte Carlo.
 
 ## Implications pratiques pour les actuaires
 
-**Si vous venez d'un background SII :**
+**Si vous venez d'un environnement SII :**
 
-1. Vous comprenez l'évaluation consistante du marché — cela se transfère directement
-2. Vous devez apprendre la calcul TVaR — c'est une mathématique simple
+1. Vous comprenez la valuation considérée — cela transfère directement
+2. Vous devez apprendre le calcul de TVaR — c'est une opération mathématique simple
 3. Vous devez comprendre les calibrations suisses spécifiques
-4. L'expérience de modèles internes est précieuse — essayez d'en développer une si possible
+4. L'expérience des modèles internes est précieuse — essayez de la développer si possible
 
-**Le rapport SST à FINMA** est l'équivalent suisse du RSR. Il contient :
+**Le rapport SST à FINMA** est le rapport suisse équivalent au RSR. Il inclut :
 
 - Calcul du capital cible
-- Capital supportable par le risque (RBC)
-- Ratio SST (RBC / Capital cible)
+- Risque supporté par le capital
+- Ratio SST (RBC / Capital Cible)
 - Analyse de sensibilité
-- Évaluation des risques
+- Autonome risk assessment
 
-## Ce que je suis en train de faire
+## Ce que je travaille en ce moment
 
-En tant que partie intégrante de mon transition vers les opportunités suisses, j'ai :
+Dans le cadre de ma transition vers les opportunités suisses, je suis :
 
-- Etudier la documentation technique du SST par FINMA
-- Ajouter les scénarios d'effort du SST à ma table de bord ALM
-- Créer un outil de comparaison : Formule Standard SII vs Modèle Standard SST
+- En train d'étudier la documentation technique du SST de FINMA
+- Je suis en train d'ajouter des scénarios de stress SST à mon tableau de bord ALM
+- Je suis en train de construire un outil de comparaison : Formulaire standard SII vs Modèle standard SST
 
-Le code sera disponible sur GitHub une fois prêt.
+Le code sera ouvert-source sur GitHub une fois prêt.
+
+## Ressources
+
+- Documentation technique du SST de FINMA (disponible sur finma.ch)
+- Rapport blanc 2024 sur le SST
+- Publications de l'Association des assurances suisses (SVV)
+
+Notez que les blocs de code doivent être conservés tels quels.

@@ -1,0 +1,164 @@
+---
+title: "Multi-Agent AI for Actuarial Closing — From Theory to Production"
+date: "2026-07-23"
+description: "Gartner predicts multi-agent AI will handle 40%+ of enterprise critical processes by 2028. Here is what this means for actuarial closing processes — and how to build it."
+tags: ["Multi-Agent AI", "LangChain", "IFRS 17", "Automation", "Agentic AI"]
+readTime: "13 min read"
+---
+
+## The closing process problem
+
+Every actuary who has worked in a large insurance company knows the pain of month-end closing.
+
+Dozens of interdependent tasks. SAS scripts that run in sequence. Excel files passed between teams. Manual checks that take hours. Deadlines that slip. Errors discovered at 11pm the night before the board presentation.
+
+I have lived this for 11 years at BNP Paribas Cardif — across IFRS 17, Solvency II and local GAAP closing processes spanning 30+ countries.
+
+The question I keep asking: how much of this could be automated with modern AI?
+
+The answer, in 2026, is: most of it.
+
+## What is multi-agent AI?
+
+A single AI agent is a LLM that can use tools — search, run code, read files, call APIs. It reasons step by step and takes actions to complete a task.
+
+A **multi-agent system** is a network of specialised agents that collaborate, each handling a specific subtask, coordinating through a shared memory or message-passing protocol.
+
+Gartner's 2025 report projects that multi-agent AI will handle more than 40% of large enterprise critical processes by 2028, up from 8% in 2026. Actuarial closing is a prime candidate.
+
+## The actuarial closing as a multi-agent problem
+
+Let us decompose a typical IFRS 17 monthly closing into its components:
+
+**Data ingestion**
+- Extract policy data from policy admin systems
+- Extract financial data from general ledger
+- Validate data completeness and quality
+- Flag anomalies
+
+**Model execution**
+- Run BEL projection models (SAS, Python, Prophet)
+- Run lapse and mortality models
+- Compute RA using VaR or TVaR methodology
+- Run CSM roll-forward
+
+**Quality controls**
+- Check BEL vs prior month — flag movements above threshold
+- Check CSM roll-forward reconciliation
+- Validate against regulatory floors and ceilings
+- Cross-check with SII BEL for consistency
+
+**Consolidation**
+- Aggregate results across product lines
+- Apply FX conversion for foreign entities
+- Produce P&L attribution by source of earnings
+- Generate management reporting
+
+**Documentation**
+- Document assumption changes
+- Flag model changes vs prior period
+- Prepare commentary for actuarial sign-off
+- Archive results with audit trail
+
+Each of these steps is a candidate for an AI agent.
+
+## Architecture of an actuarial multi-agent system
+
+Here is the architecture I am designing:
+Orchestrator Agent
+├── Data Agent
+│ ├── Extraction tool (SQL, API)
+│ ├── Validation tool (Great Expectations)
+│ └── Anomaly detection tool (statistical tests)
+├── Model Agent
+│ ├── SAS execution tool
+│ ├── Python model runner
+│ └── Results parser
+├── QC Agent
+│ ├── Threshold checker
+│ ├── Reconciliation tool
+│ └── Exception reporter
+├── Consolidation Agent
+│ ├── FX conversion tool
+│ ├── Aggregation tool
+│ └── Attribution calculator
+└── Documentation Agent
+├── Commentary generator (LLM)
+├── Model card updater
+└── Audit trail writer
+The **Orchestrator Agent** coordinates the workflow, decides which agent to call next based on the current state, handles exceptions, and escalates to humans when needed.
+
+## Implementation with LangChain
+
+Here is a simplified example of how the QC Agent works:
+
+```python
+from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain_ollama import OllamaLLM
+from langchain.tools import tool
+import pandas as pd
+
+@tool
+def check_bel_movement(current_bel: float, prior_bel: float, threshold: float = 0.05) -> str:
+    movement = abs(current_bel - prior_bel) / prior_bel
+    if movement > threshold:
+        return f"ALERT: BEL movement {movement:.1%} exceeds threshold {threshold:.1%}. Requires actuarial review."
+    return f"OK: BEL movement {movement:.1%} within tolerance."
+
+@tool  
+def check_csm_reconciliation(opening_csm: float, adjustments: dict, closing_csm: float) -> str:
+    expected_closing = (
+        opening_csm 
+        + adjustments.get('interest_accretion', 0)
+        + adjustments.get('experience_adjustments', 0)
+        - adjustments.get('release_to_profit', 0)
+    )
+    difference = abs(expected_closing - closing_csm)
+    if difference > 0.01:
+        return f"ERROR: CSM reconciliation gap of {difference:.4f}. Investigation required."
+    return f"OK: CSM reconciliation passes."
+
+llm = OllamaLLM(model="llama3.1:8b")
+tools = [check_bel_movement, check_csm_reconciliation]
+
+qc_agent = create_openai_tools_agent(llm, tools, prompt)
+qc_executor = AgentExecutor(agent=qc_agent, tools=tools, verbose=True)
+```
+
+The agent receives the closing results, runs the QC tools, reasons about the outputs, and produces a structured quality control report — flagging exceptions that require human review.
+
+## Human oversight in the loop
+
+Multi-agent AI for closing does not mean fully autonomous closing. Under AI Act requirements and sound governance, humans remain in the loop at key decision points:
+
+- **Data anomalies**: agent flags, human decides whether to proceed or investigate
+- **BEL movements above threshold**: agent explains, actuary approves or rejects
+- **Model exceptions**: agent escalates automatically to model owner
+- **Final sign-off**: Chief Actuary reviews and approves — this step is never automated
+
+The agent handles the routine. Humans focus on the exceptions and the judgement calls.
+
+## What changes for actuaries
+
+This is not about replacing actuaries. It is about changing what actuaries do.
+
+**Today**: 60% of closing time spent on data manipulation, script execution, manual checks, Excel reconciliations.
+
+**With multi-agent AI**: 80% of closing time spent on reviewing agent outputs, investigating exceptions, exercising actuarial judgement.
+
+The actuary becomes the quality controller of an AI-assisted process — which requires deeper understanding of the models, not less.
+
+The actuaries who will thrive are those who understand both the actuarial methodology and the AI systems running it. Which is exactly the profile I am building.
+
+## Current status and next steps
+
+I am currently building a prototype multi-agent closing system for IFRS 17 BEL calculation. The system uses:
+
+- **LangChain** for agent orchestration
+- **Ollama + Llama 3.1 8B** running locally on RTX 5060
+- **Python tools** for BEL calculation and QC checks
+- **Streamlit** for the human oversight interface
+
+The project will be open source on GitHub. It is the most ambitious project in my portfolio — and the one I believe will be most relevant for the 2027-2028 regulatory cycle.
+
+Follow the newsletter for updates.

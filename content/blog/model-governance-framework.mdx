@@ -1,0 +1,208 @@
+---
+title: "Model Governance Framework — Satisfying AI Act, Solvency II and IFRS 17 Simultaneously"
+date: "2026-07-23"
+description: "Three regulatory frameworks converging toward the same objective. Here is how to build one unified model governance framework that satisfies all three — and saves months of duplicate work."
+tags: ["AI Act", "Solvency II", "IFRS 17", "Model Governance", "Risk Management"]
+readTime: "14 min read"
+---
+
+## The compliance trap most insurers are falling into
+
+When the AI Act compliance deadline loomed, most large European insurers did what large organisations always do: they created a new project, a new team, a new process.
+
+The result: three parallel governance frameworks running simultaneously.
+
+- IFRS 17 model documentation (Actuarial function)
+- Solvency II model validation (Risk function)
+- AI Act technical documentation (IT/Compliance function)
+
+Three teams. Three sets of meetings. Three sets of documents describing the same models. Three times the cost.
+
+After 11 years implementing actuarial governance tools across 30+ countries at BNP Paribas Cardif, I have seen this pattern before. The solution is always the same: step back, identify the common requirements, and build once.
+
+## What the three frameworks actually require
+
+Let us be precise about what each framework demands.
+
+### IFRS 17 — Actuarial assumptions and methodology
+
+IFRS 17 requires that assumptions used in BEL, RA and CSM calculations be:
+- Documented and justified
+- Consistent with observable market data where available
+- Reviewed and updated at each reporting date
+- Approved by the actuarial function
+
+For ML models feeding into IFRS 17 calculations (lapse prediction, mortality modelling, expense loading), this means the model must be documented, its assumptions justified, and its outputs reviewed by a qualified actuary.
+
+### Solvency II — Internal model requirements
+
+For insurers using internal models, Articles 120-125 of the Solvency II Directive require:
+- Use test: the model must be genuinely used in risk management decisions
+- Statistical quality standards: methodology must be sound and validated
+- Calibration standards: outputs must be calibrated against historical data
+- Profit and loss attribution: model performance must be monitored
+- Validation standards: independent validation by a function separate from model development
+- Documentation standards: complete technical documentation
+
+### AI Act — High-risk AI system requirements
+
+Articles 8-15 require (as detailed in my previous article):
+- Risk management system
+- Data governance documentation
+- Technical file
+- Automatic logging
+- Human oversight mechanisms
+- Accuracy and robustness monitoring
+
+## The overlap is larger than you think
+
+When you map these requirements side by side, the overlap is striking:
+
+| Requirement | IFRS 17 | Solvency II | AI Act |
+|---|---|---|---|
+| Model documentation | ✅ | ✅ | ✅ |
+| Data documentation | ✅ | ✅ | ✅ |
+| Performance monitoring | ✅ | ✅ | ✅ |
+| Independent validation | ✅ | ✅ | (implied) |
+| Human oversight | ✅ | ✅ | ✅ |
+| Change management | ✅ | ✅ | ✅ |
+| Audit trail | ✅ | ✅ | ✅ |
+
+The differences are mostly in calibration specifics, not in the fundamental governance structure.
+
+## The unified framework — six components
+
+Here is the framework I recommend, built around six components that satisfy all three regimes simultaneously.
+
+### Component 1 — Model Inventory
+
+A single registry of all models used in actuarial, risk and pricing processes. For each model:
+Model ID: ACT-2024-017
+Name: Lapse rate prediction model
+Type: LightGBM classifier
+Version: 2.3.1
+Owner: Actuarial team
+Last validation: 2024-Q4
+AI Act classification: High-risk (Annex III)
+IFRS 17 scope: BEL cash flows
+SII scope: SCR Lapse sub-module
+Status: Production
+This inventory is the foundation. Without it, you cannot manage what you cannot see.
+
+### Component 2 — Model Card
+
+For each model, a structured document covering:
+
+**Purpose and scope**
+- What decision does this model support?
+- Who are the affected individuals or portfolios?
+- What is the regulatory scope (IFRS 17 / SII / AI Act)?
+
+**Data**
+- Training data: source, period, size, preprocessing
+- Known biases or limitations in training data
+- Validation data: out-of-sample, out-of-time
+
+**Methodology**
+- Algorithm and architecture
+- Feature selection rationale
+- Hyperparameter tuning approach
+- Known limitations
+
+**Performance**
+- Metrics: AUC, RMSE, calibration
+- Performance by segment (age, product, geography)
+- Benchmark against previous version or challenger model
+
+**Governance**
+- Development team
+- Independent validator
+- Approver (Chief Actuary / CRO)
+- Approval date and next review date
+
+**Change log**
+- History of all versions with dates and rationale
+
+This model card satisfies IFRS 17 assumption documentation, SII technical documentation, and AI Act technical file requirements — simultaneously.
+
+### Component 3 — Validation Framework
+
+Independent validation is required by both SII and implied by AI Act. The validation process should cover:
+
+- **Conceptual soundness**: is the methodology appropriate for the purpose?
+- **Data quality**: is the training data fit for purpose?
+- **Performance**: does the model perform acceptably on held-out data?
+- **Stability**: is performance stable across time and segments?
+- **Sensitivity**: how sensitive are outputs to input changes?
+- **Benchmark**: how does the model compare to simpler alternatives?
+
+Validation results feed back into the model card and the model inventory.
+
+### Component 4 — Monitoring Framework
+
+Models degrade over time. Regulatory frameworks require ongoing monitoring. Key metrics to track:
+
+- **Performance drift**: is the model still as accurate as at validation?
+- **Population shift**: has the input data distribution changed?
+- **Output distribution**: have model outputs shifted unexpectedly?
+- **Business impact**: are decisions downstream still appropriate?
+
+Monitoring triggers should be defined: thresholds that automatically flag a model for re-validation.
+
+### Component 5 — Human Oversight Protocol
+
+AI Act Article 14 requires human oversight. For actuarial models, this means:
+
+- Underwriters must be able to override pricing model outputs
+- Actuaries must review and approve BEL outputs before use in financial statements
+- Claims handlers must be able to override automated assessment
+- All overrides must be logged with rationale
+
+The override log itself serves as evidence of human oversight for AI Act compliance.
+
+### Component 6 — Audit Trail
+
+All of the above must be traceable. Every model version, every validation, every approval, every override must be logged with timestamp and user identity.
+
+This is the technical infrastructure challenge — and it is exactly what tools like Condor (which I manage at BNP Paribas Cardif) address at scale.
+
+## Implementation roadmap
+
+**Phase 1 — Foundation (3 months)**
+- Build model inventory
+- Prioritise high-risk models (AI Act Annex III)
+- Create model card template
+- Assign owners
+
+**Phase 2 — Documentation (6 months)**
+- Complete model cards for all in-scope models
+- Gap analysis against SII and AI Act requirements
+- Define monitoring thresholds
+
+**Phase 3 — Process (6 months)**
+- Implement validation framework
+- Deploy monitoring dashboards
+- Train teams on human oversight protocols
+- Run audit trail infrastructure
+
+**Phase 4 — Certification (3 months)**
+- Internal audit
+- Regulatory submission where required
+- Continuous improvement process
+
+Total: 18 months. Start now to be ready for December 2027.
+
+## What I am building
+
+I am developing an open source **Model Governance Dashboard** that implements these six components:
+
+- Model inventory with metadata
+- Model card generator
+- Performance monitoring charts
+- Validation workflow tracker
+- Override logging
+- Regulatory compliance checklist (AI Act / SII / IFRS 17)
+
+The project will be on GitHub. It is directly inspired by 10+ years working with Condor — the actuarial governance tool deployed across 30+ countries at BNP Paribas Cardif — but open source and AI-focused.
+
+Follow the newsletter to be notified when it launches.

@@ -7,7 +7,7 @@ export default function Navbar() {
         </a>
         <div style={{display: 'flex', gap: '32px', fontSize: '14px'}}>
           <a href="#expertise" style={{color: '#6b7280', textDecoration: 'none'}}>Expertise</a>
-          <a href="#projects" style={{color: '#6b7280', textDecoration: 'none'}}>Projects</a>
+          <a href="/projects" style={{color: '#6b7280', textDecoration: 'none'}}>Projects</a>
           <a href="/blog" style={{color: '#6b7280', textDecoration: 'none'}}>Blog</a>
           <a href="/newsletter" style={{color: '#6b7280', textDecoration: 'none'}}>Newsletter</a>
           <a href="#services" style={{color: '#6b7280', textDecoration: 'none'}}>Services</a>
